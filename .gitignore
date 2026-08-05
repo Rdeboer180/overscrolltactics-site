@@ -1,2 +1,9 @@
 .claude/
 .DS_Store
+
+# Internal working docs. This repo IS the deployed site — anything committed
+# here is served publicly at overscrolltactics.com and crawlable. Keep product
+# strategy local.
+PRODUCT.md
+DESIGN.md
+.impeccable/
