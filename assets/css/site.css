@@ -144,7 +144,7 @@ a { color: inherit; }
 .lockup {
   position: relative;
   width: var(--L);
-  height: calc(var(--L) * 0.5244);
+  height: calc(var(--L) * 0.5502);
   margin-bottom: 2.5rem;
 }
 
@@ -159,14 +159,25 @@ a { color: inherit; }
   border-radius: 6px;
 }
 
-/* Layer geometry derived from logo.svg:
-   arc = wordmark × 2.112 at (46.18, 0); type at (0, 124.28); canvas 299.48 × 157.04 */
+/* Layer geometry derived from logo.svg (arc = wordmark × 2.112 at x 46.18),
+   with the type dropped to y 132 so it clears the orange stick (tip at y 116).
+   Canvas: 299.48 wide × 164.76 tall → height = width × 0.5502. */
 .m-crop {
   position: absolute;
   left: 24.21%;
-  top: 10.28%;
+  top: 9.8%;
   width: 58.46%;
   opacity: 0;
+}
+/* Paper panel that slides up to occlude the bottom half — transform-only crop */
+.m-cover {
+  position: absolute;
+  left: -12%;
+  right: -12%;
+  top: 50%;
+  height: 80%;
+  background: var(--paper);
+  transform: translateY(120%);
 }
 .m-arc {
   position: absolute;
@@ -177,26 +188,32 @@ a { color: inherit; }
 .type-reveal {
   position: absolute;
   left: 0;
-  top: 66.3%;
+  top: 70.4%;
   width: 100%;
-  height: 33.7%;
+  height: 29.6%;
   overflow: hidden;
 }
 .m-type {
   position: absolute;
   left: 0;
-  top: 38.1%;
+  top: 32.8%;
   width: 100%;
 }
 
 .cursor-fx {
   position: absolute;
-  left: 61%;
-  top: 22%;
-  width: calc(var(--L) * 0.055);
-  min-width: 18px;
+  left: 60%;
+  top: 24%;
+  width: calc(var(--L) * 0.052);
+  min-width: 17px;
   opacity: 0;
   pointer-events: none;
+}
+.cursor-fx path {
+  fill: var(--ink);
+  stroke: var(--paper);
+  stroke-width: 1.4;
+  stroke-linejoin: round;
 }
 
 .hero-line {
@@ -220,31 +237,39 @@ a { color: inherit; }
   background: var(--accent);
 }
 
-/* ----- Animation timeline (only when .play is set) ----- */
+/* ----- Animation timeline (only when .play is set) -----
+   Compositor-only: every keyframe animates transform/opacity. The "crop" is a
+   paper cover panel translating up over the mark, never clip-path or height. */
 
-.play .m-full-wrap { animation: full-in 0.5s cubic-bezier(0.2, 0.7, 0.3, 1) 0.1s both; }
-.play .m-crop      { animation: crop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 1.45s both,
-                                crop-in 0.01s linear 0.1s both,
-                                crop-out 0.25s ease 1.72s forwards; }
-.play .m-arc       { animation: arc-in 0.22s ease 1.72s both; }
-.play .m-type      { animation: type-slide 0.55s cubic-bezier(0.22, 0.9, 0.3, 1) 2s both; }
-.play .cursor-fx   { animation: cursor-fly 0.6s cubic-bezier(0.4, 0, 0.6, 1) 0.9s both; }
-.play .cursor-wheel{ animation: wheel-roll 0.3s ease-in 1.05s 2 both; }
-.play .hero-line   { animation: rise-in 0.45s ease-out 2.45s both; }
-.play .hero-cta    { animation: rise-in 0.45s ease-out 2.6s both; }
-.play .scroll-cue  { animation: cue-in 0.4s ease-out 2.95s both, cue-nudge 1.2s ease-in-out 3.4s 3; }
+.play .m-full-wrap { animation: full-in 0.5s cubic-bezier(0.2, 0.7, 0.3, 1) 0.1s both,
+                                hover-pop 0.3s ease-out 1.25s; }
+.play .m-crop      { animation: crop-in 0.01s linear 0.1s both,
+                                crop-out 0.25s ease 1.85s forwards; }
+.play .m-cover     { animation: cover-up 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 1.55s both; }
+.play .m-arc       { animation: arc-in 0.22s ease 1.85s both; }
+.play .m-type      { animation: type-slide 0.5s cubic-bezier(0.22, 0.9, 0.3, 1) 2.1s both; }
+.play .cursor-fx   { animation: cursor-in 0.35s cubic-bezier(0.2, 0.7, 0.3, 1) 0.9s both,
+                                cursor-flick 0.4s cubic-bezier(0.5, 0, 0.8, 0.5) 1.6s forwards; }
+.play .hero-line   { animation: rise-in 0.45s ease-out 2.55s both; }
+.play .hero-cta    { animation: rise-in 0.45s ease-out 2.7s both; }
+.play .scroll-cue  { animation: cue-in 0.4s ease-out 3.05s both, cue-nudge 1.2s ease-in-out 3.5s 3; }
 
 @keyframes full-in {
   from { opacity: 0; transform: scale(0.94); }
   to   { opacity: 1; transform: scale(1); }
 }
-/* wrapper exists so opacity/scale and clip animate on separate elements */
-@keyframes crop-in { from { opacity: 0; } to { opacity: 1; } }
-@keyframes crop {
-  from { clip-path: inset(0 0 0 0); }
-  to   { clip-path: inset(0 0 50% 0); }
+/* browser-style hover response when the cursor reaches the mark */
+@keyframes hover-pop {
+  0%   { transform: scale(1); }
+  45%  { transform: scale(1.03); }
+  100% { transform: scale(1); }
 }
+@keyframes crop-in { from { opacity: 0; } to { opacity: 1; } }
 @keyframes crop-out { to { opacity: 0; } }
+@keyframes cover-up {
+  from { transform: translateY(120%); }
+  to   { transform: translateY(0); }
+}
 @keyframes arc-in {
   from { opacity: 0; }
   to   { opacity: 1; }
@@ -253,15 +278,13 @@ a { color: inherit; }
   from { transform: translateY(-170%); }
   to   { transform: translateY(0); }
 }
-@keyframes cursor-fly {
-  0%   { opacity: 0; transform: translateY(0); }
-  18%  { opacity: 1; }
-  80%  { opacity: 1; }
-  100% { opacity: 0; transform: translateY(calc(var(--L) * 0.16)); }
+@keyframes cursor-in {
+  from { opacity: 0; transform: translate(calc(var(--L) * 0.06), calc(var(--L) * 0.08)); }
+  to   { opacity: 1; transform: translate(0, 0); }
 }
-@keyframes wheel-roll {
-  from { transform: translateY(0); }
-  to   { transform: translateY(4px); }
+@keyframes cursor-flick {
+  from { opacity: 1; transform: translate(0, 0); }
+  to   { opacity: 0; transform: translate(0, calc(var(--L) * 0.14)); }
 }
 @keyframes rise-in {
   from { opacity: 0; transform: translateY(12px); }
@@ -284,7 +307,7 @@ a { color: inherit; }
   .play .m-crop, .play .cursor-fx { animation: none; opacity: 0; }
   .play .m-arc, .play .m-type, .play .hero-line,
   .play .hero-cta, .play .scroll-cue, .play .m-full-wrap,
-  .play .cursor-wheel { animation: none; }
+  .play .m-cover { animation: none; }
 }
 
 /* ---------- Shared bits ---------- */
