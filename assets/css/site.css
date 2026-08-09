@@ -16,6 +16,9 @@
   --paper: #faf9f7;
   --ink: #1b1b1b;
   --accent: #f03d01;
+  /* burn-off ramp: bloom heat and cooling char between accent and ink */
+  --ember-hot: #ff5a14;
+  --ember-char: #501c07;
   --muted: #5d5a55;
   --line: rgba(27, 27, 27, 0.14);
   --band-text: #f4f1ec;
@@ -206,9 +209,14 @@ a { color: inherit; }
    `fill`), so nothing here touches layout.
 
    110  key block falls               990  well piece · 240ms down the shaft
-   330  piece 1 · 60ms stagger       1230  LOCK — one pulse, then the floor drops
+   330  piece 1 · 60ms stagger       1230  LOCK — pulse, settle, burn-off
    690  piece 7 lands, 120ms pause   1330  wordmark      1425  canonical mark
-*/
+
+   The lock is the one earned focal moment, so it gets the expressive motion:
+   the whole stack takes a 2px impact settle, the pieces cool from accent
+   through char to ink instead of snapping black, and an ember bloom bleeds
+   past the silhouette into the paper before it dies. One bloom, one decay —
+   never a strobe. */
 
 /* Base paint. Pieces are accent while in motion, never at rest. */
 .found  { fill: var(--accent); opacity: 0; }
@@ -220,18 +228,57 @@ a { color: inherit; }
 .pc     { opacity: 0; }
 .emblem { fill: var(--ink); opacity: 0; }
 .type   { fill: var(--ink); }
+/* Wipe rect and caret live in user space; both step the full width of the
+   wordmark, so one shared travel distance keeps the caret welded to the edge.
+   They rest fully open — the wordmark has to be readable with no JS, under
+   reduced motion, and between replays. The animation's backwards fill is what
+   pulls the wipe off-screen for the reveal. */
+.type-wipe,
+.type-caret { transform: translateX(0); }
+.type-caret { fill: var(--accent); opacity: 0; }
 /* Hard-drop streak behind the key block */
 .trail-near { stop-color: var(--accent); stop-opacity: 0.5; }
 .trail-far  { stop-color: var(--accent); stop-opacity: 0; }
 .trail      { opacity: 0; }
+/* Burn-off bloom. The svg is sized to the emblem's share of the lockup so
+   the two paths land exactly on the mark; overflow stays visible so the
+   glow can leave the canvas and bleed into the paper. */
+.burn-svg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 26.917%; /* 135.41 / 503.11 — the emblem's share of the lockup */
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+.burn {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.burn-halo { fill: var(--ember-hot); }
+.burn-core { fill: var(--ember-hot); }
 
 .play .keyblock { animation: keyfall 1280ms 110ms both; }
 .play .found    { animation: keyfade 1280ms linear 110ms both; }
 .play .trail    { animation: keytrail 1280ms linear 110ms both; }
-.play .pieces { animation: pc-ink 140ms linear 1230ms both,
+.play .pieces { animation: pc-ink 195ms linear 1230ms both,
                            pc-off 1ms steps(1, end) 1425ms both; }
-.play .emblem { animation: fade-in 55ms linear 1370ms both; }
-.play .type   { animation: type-in 220ms cubic-bezier(0.2, 0.75, 0.3, 1) 1330ms both; }
+.play .emblem { animation: emblem-set 520ms linear 1370ms both; }
+/* The wordmark types itself on in twelve 35ms cells, then cools with the
+   emblem so the mark and the name go out together rather than in sequence. */
+.play .type-wipe  { animation: type-wipe 420ms steps(12, end) 1300ms both; }
+.play .type-caret { animation: type-wipe 420ms steps(12, end) 1300ms both,
+                               caret-out 420ms linear 1300ms both; }
+.play .type       { animation: type-cool 700ms linear 1350ms both; }
+/* The burn fires at the lock. The bloom is only the edge of the event — a
+   thin heat rim leaving the silhouette — so both layers stay faint. The
+   burn itself lives on the glyph, in `emblem-set` below. The 2px settle is
+   the final piece's impact travelling through the stack. */
+.play .burn-core  { animation: burn-core 560ms cubic-bezier(0.22, 1, 0.36, 1) 1230ms both; }
+.play .burn-halo  { animation: burn-halo 900ms cubic-bezier(0.22, 1, 0.36, 1) 1230ms both; }
+.play .lockup-svg { animation: lock-settle 180ms cubic-bezier(0.3, 0.9, 0.4, 1) 1230ms both; }
 
 /* Gravity ticks: the stack falls in discrete grid steps, not a glide. This is
    the thing that makes it read as a falling-block game rather than motion
@@ -301,12 +348,62 @@ a { color: inherit; }
   100%   { opacity: 0; }
 }
 
-/* At the lock the blocks stop being blocks: seams close, colour resolves. */
-@keyframes pc-ink { to { fill: var(--ink); stroke-opacity: 0; } }
+/* At the lock the blocks stop being blocks — the seams close, but the colour
+   does not move yet. The stack stays fully hot so the canonical path can take
+   over at the same orange and the handoff is invisible. */
+@keyframes pc-ink {
+  0%   { fill: var(--accent); }
+  100% { fill: var(--accent); stroke-opacity: 0; }
+}
 @keyframes pc-off { to { opacity: 0; } }
-@keyframes type-in {
-  from { opacity: 0; transform: translateX(-16px); }
-  to   { opacity: 1; transform: translateX(0); }
+/* The burn. Once the mark is one solid glyph it cools in place: it holds the
+   accent long enough to register as the finished shape, sinks through char,
+   and settles on ink. This is the slowest move in the sequence on purpose —
+   the whole build exists to arrive here, so the last thing the eye does is
+   watch the orange go out. */
+@keyframes emblem-set {
+  0%   { opacity: 0; fill: var(--accent); }
+  7%   { opacity: 1; fill: var(--accent); }
+  30%  { fill: var(--accent); }
+  62%  { fill: var(--ember-char); }
+  100% { opacity: 1; fill: var(--ink); }
+}
+/* The bloom: flare fast, dissipate slow, drifting outward as it cools.
+   Deliberately faint — it is the heat leaving the mark, not a glow effect.
+   Anything stronger competes with the colour burn happening on the glyph. */
+@keyframes burn-core {
+  0%   { opacity: 0; transform: scale(0.99); }
+  16%  { opacity: 0.34; }
+  100% { opacity: 0; transform: scale(1.02); }
+}
+@keyframes burn-halo {
+  0%   { opacity: 0; transform: scale(1); }
+  18%  { opacity: 0.2; }
+  100% { opacity: 0; transform: scale(1.05); }
+}
+@keyframes lock-settle {
+  0%   { transform: translateY(0); }
+  35%  { transform: translateY(2px); }
+  100% { transform: translateY(0); }
+}
+@keyframes type-wipe {
+  from { transform: translateX(-346px); }
+  to   { transform: translateX(0); }
+}
+/* On through the reveal, out before it can overlap the final S. */
+@keyframes caret-out {
+  0%   { opacity: 0; }
+  4%   { opacity: 1; }
+  82%  { opacity: 1; }
+  96%  { opacity: 0; }
+  100% { opacity: 0; }
+}
+/* The name arrives hot and cools to ink alongside the emblem. */
+@keyframes type-cool {
+  0%   { fill: var(--accent); }
+  26%  { fill: var(--accent); }
+  60%  { fill: var(--ember-char); }
+  100% { fill: var(--ink); }
 }
 @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
 @keyframes rise-in {
@@ -322,6 +419,8 @@ a { color: inherit; }
    path and the wordmark are the only things visible — never a stray piece. */
 .hero:not(.play) .found,
 .hero:not(.play) .trail,
+.hero:not(.play) .burn,
+.hero:not(.play) .type-caret,
 .hero:not(.play) .pieces { opacity: 0; }
 .hero:not(.play) .emblem { opacity: 1; }
 
@@ -330,6 +429,10 @@ a { color: inherit; }
   .play .keyblock { animation: none; }
   .play .found, .play .trail, .play .pieces { animation: none; opacity: 0; }
   .play .pc { animation: none; }
+  .play .burn { animation: none; opacity: 0; }
+  .play .lockup-svg { animation: none; }
+  .play .type-wipe { animation: none; transform: translateX(0); }
+  .play .type-caret { animation: none; opacity: 0; }
   .play .emblem { animation: none; opacity: 1; }
   .play .type { animation: fade-in 110ms linear both; }
   .play .hero-line, .play .hero-cta { animation: fade-in 110ms linear both; }
