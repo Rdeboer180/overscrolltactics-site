@@ -20,10 +20,79 @@
 <main class="page oops">
   <div class="wrap">
     <img class="m-arc-static" src="/assets/img/wordmark.svg" alt="" width="90" height="121">
-    <h1>You've overscrolled.</h1>
-    <p>There's nothing past this point — the page you're after doesn't exist.</p>
-    <a class="btn" href="/">Back to the studio</a>
+    <h1 id="oops-title">You've overscrolled.</h1>
+    <p id="oops-body">There's nothing past this point — the page you're after doesn't exist.</p>
+    <a class="btn" id="oops-cta" href="/">Back to the studio</a>
   </div>
 </main>
+
+<!--
+  PLAYDRAFT UNIVERSAL-LINK FALLBACK.
+
+  This site is static (GitHub Pages), so /playdraft/league/join/<code> has no
+  file behind it and lands here. That is fine and expected:
+
+    · Someone WITH the app never sees this page. iOS matches the URL against
+      /.well-known/apple-app-site-association and opens PlayDraft directly —
+      it does not fetch this page at all.
+    · Someone WITHOUT the app lands here, and the whole job of this script is
+      to make that a useful moment instead of a dead end.
+
+  So the paths below must stay in sync with THREE places: the AASA
+  `components` array, `src/lib/links.ts` in the PlayDraft repo, and the
+  in-app routes. If a shape is added to one, add it to all four.
+-->
+<script>
+(function () {
+  var TESTFLIGHT = 'https://testflight.apple.com/join/VkTM1uRC';
+  var path = window.location.pathname;
+
+  // Shapes are ordered most-specific first: /playdraft/league/join/ must be
+  // tested before any shorter /playdraft/ prefix could shadow it.
+  var SHAPES = [
+    {
+      re: /^\/playdraft\/league\/join\/([^/]+)\/?$/,
+      title: 'You’ve been invited to a Draft League.',
+      body: function (code) {
+        return 'Install PlayDraft and this invite will open straight into the league. ' +
+               'Your invite code is ' + code + ' — you can enter it by hand if the link doesn’t catch.';
+      }
+    },
+    {
+      re: /^\/playdraft\/invite\/([^/]+)\/?$/,
+      title: 'Someone sent you a PlayDraft code.',
+      body: function (code) {
+        return 'Install PlayDraft to redeem it. Your code is ' + code + '.';
+      }
+    },
+    {
+      re: /^\/playdraft\/d\/([^/]+)\/?$/,
+      title: 'You’ve been invited to a draft.',
+      body: function () {
+        return 'Install PlayDraft and open this link again to take your seat at the board.';
+      }
+    }
+  ];
+
+  for (var i = 0; i < SHAPES.length; i++) {
+    var m = SHAPES[i].re.exec(path);
+    if (!m) continue;
+
+    // decodeURIComponent can throw on a malformed code (a stray % survives a
+    // copy-paste out of a chat app). Falling back to the raw segment keeps the
+    // page useful instead of blanking it.
+    var code;
+    try { code = decodeURIComponent(m[1]); } catch (e) { code = m[1]; }
+
+    document.getElementById('oops-title').textContent = SHAPES[i].title;
+    document.getElementById('oops-body').textContent = SHAPES[i].body(code);
+    var cta = document.getElementById('oops-cta');
+    cta.href = TESTFLIGHT;
+    cta.textContent = 'Get PlayDraft';
+    document.title = 'PlayDraft invite — OTC Games';
+    break;
+  }
+})();
+</script>
 </body>
 </html>

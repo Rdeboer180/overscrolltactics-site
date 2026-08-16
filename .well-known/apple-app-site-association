@@ -1,0 +1,23 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["__APPLE_TEAM_ID__.com.playdraft.app"],
+        "appID": "__APPLE_TEAM_ID__.com.playdraft.app",
+        "components": [
+          { "/": "/playdraft/league/join/*", "comment": "Draft League invite" },
+          { "/": "/playdraft/invite/*",      "comment": "Promo / referral code" },
+          { "/": "/playdraft/d/*",           "comment": "Draft room" }
+        ],
+        "paths": [
+          "/playdraft/league/join/*",
+          "/playdraft/invite/*",
+          "/playdraft/d/*"
+        ]
+      }
+    ]
+  },
+  "webcredentials": {
+    "apps": ["__APPLE_TEAM_ID__.com.playdraft.app"]
+  }
+}
