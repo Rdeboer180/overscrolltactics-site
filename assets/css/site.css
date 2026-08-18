@@ -848,6 +848,30 @@ h2 { font-size: clamp(2.1rem, 1.5rem + 2.6vw, 3.4rem); }
 .btn-ghost[aria-disabled="true"]:hover { background: none; color: inherit; }
 .btn[aria-disabled="true"]:hover { background: var(--ink); transform: none; }
 
+/* Wide screen frame — the landscape sibling of .device, for the v12 reel. */
+.screen {
+  width: min(52rem, 92vw);
+  margin-inline: auto;
+  background: var(--ink);
+  border-radius: 1.25rem;
+  padding: 0.5rem;
+  box-shadow: 0 30px 70px -35px rgba(27, 27, 27, 0.55);
+}
+.screen video,
+.screen img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0.85rem;
+  background: #12161f;
+}
+a.screen {
+  display: block;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+a.screen:hover { transform: translateY(-2px); }
+.pd-media .screen { width: min(56rem, 88vw); }
+
 /* Device frame (shared with the homepage teaser) */
 .device {
   width: min(19rem, 78vw);

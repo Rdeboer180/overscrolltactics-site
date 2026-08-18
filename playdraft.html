@@ -81,10 +81,12 @@
       </ul>
     </div>
     <div class="panel pd-media">
-      <div class="device">
-        <video src="/assets/video/playdraft.mp4" poster="/assets/video/playdraft-poster.jpg"
-               width="540" height="1174" controls loop muted playsinline preload="metadata"
-               aria-label="Screen recording of PlayDraft: browsing DraftPacks, drafting on the clock, and crowning a champion">
+      <!-- Wide "How to Play" reel (v12, 2026-08-18) — replaced the portrait
+           hand recording. The .screen frame is the wide sibling of .device. -->
+      <div class="screen">
+        <video poster="/assets/video/playdraft-poster.jpg"
+               width="1920" height="1080" controls loop muted playsinline preload="metadata"
+               aria-label="How to Play reel: pick a pack, set the rules, invite your group, draft on the clock, see the board decide, argue it, collect the cards, and take the debate public">
           <source src="/assets/video/playdraft.webm" type="video/webm">
           <source src="/assets/video/playdraft.mp4" type="video/mp4">
         </video>
