@@ -68,6 +68,20 @@
              and steps right in twelve cells — roughly a glyph per cell, so
              the name types itself on the way a high-score line does. -->
         <clipPath id="otc-type-wipe"><rect class="type-wipe" x="158" y="28" width="346" height="156"/></clipPath>
+        <!-- The cutter pass. Two rects sweep with the blade: one reveals the
+             mark behind it, one hides the stack ahead of it. Both rest open
+             so the finished mark survives no-JS and between replays. The
+             behind-rect runs wide and tall so freed offcuts can fall and
+             drift before the viewBox swallows them. -->
+        <clipPath id="otc-cut"><rect class="cut-behind" x="-40" y="-1" width="176.5" height="214"/></clipPath>
+        <clipPath id="otc-cut-stack"><rect class="cut-ahead" x="-1" y="-1" width="137.5" height="184.5"/></clipPath>
+        <!-- Boolean waste: everything inside the board that is not the mark.
+             Each offcut is a plain rect trimmed by this mask, so the scraps
+             match the die-cut exactly without hand-drawn complements. -->
+        <mask id="otc-waste" maskUnits="userSpaceOnUse" x="-2" y="-2" width="140" height="187">
+          <rect x="-2" y="-2" width="140" height="187" fill="#fff"/>
+          <path fill="#000" d="M62.1,159.36l-29.74-.3-.16-19.16-32.2-.48L.51,62.4C2.1,31.79,25.71,7.09,55.06,1.31c40.99-8.07,80.19,22.22,80.23,64.25l.12,116.53-72.99.04-.32-22.77ZM78.98,67.86l-.15-22.22c-.04-5.45-6.4-8.46-10.98-8.08-4.81.4-9.73,4.33-9.7,9.8l.13,21.05c.03,5.4,5.83,8.29,10.5,8.22s10.23-2.89,10.19-8.77Z"/>
+        </mask>
       </defs>
       <!-- The playfield: a 4×4 board on the emblem's footprint, cell
            33.85 × 45.53. Faint interior grid while pieces are in play;
@@ -76,15 +90,32 @@
       <!-- Four classic tetrominoes fill the board exactly: I, O, J, L.
            Pieces enter from the board's top edge, move only in whole-cell
            steps, and every path is collision-legal against the stack. -->
-      <g class="tet tetI"><rect x="0" y="136.6" width="135.41" height="45.53"/></g><!-- I: the floor, hard-dropped first -->
-      <g class="tet tetO"><rect x="33.85" y="45.53" width="67.71" height="91.07"/></g><!-- O: falls the right lane, steers left onto the I -->
-      <g class="tet tetJ"><path d="M0,0h67.71v45.53H33.86v91.07H0z"/></g><!-- J: left tower, its nub caps the O -->
-      <g class="tet tetL"><path d="M67.71,0h67.7v136.6h-33.85V45.53H67.71z"/></g><!-- L: right tower, completes the board -->
-      <!-- The line-clear flash: the board blanks for a beat, and the mark
-           is what's left when it passes. -->
-      <rect class="clear-flash" x="-1" y="-1" width="137.41" height="184.13"/>
-      <!-- Canonical mark: one path, wheel knocked out by winding. -->
-      <path class="emblem" d="M62.1,159.36l-29.74-.3-.16-19.16-32.2-.48L.51,62.4C2.1,31.79,25.71,7.09,55.06,1.31c40.99-8.07,80.19,22.22,80.23,64.25l.12,116.53-72.99.04-.32-22.77ZM78.98,67.86l-.15-22.22c-.04-5.45-6.4-8.46-10.98-8.08-4.81.4-9.73,4.33-9.7,9.8l.13,21.05c.03,5.4,5.83,8.29,10.5,8.22s10.23-2.89,10.19-8.77Z"/>
+      <g class="stack" clip-path="url(#otc-cut-stack)">
+        <g class="tet tetI"><rect x="0" y="136.6" width="135.41" height="45.53"/></g><!-- I: the floor, hard-dropped first -->
+        <g class="tet tetO"><rect x="33.85" y="45.53" width="67.71" height="91.07"/></g><!-- O: falls the right lane, steers left onto the I -->
+        <g class="tet tetJ"><path d="M0,0h67.71v45.53H33.86v91.07H0z"/></g><!-- J: left tower, its nub caps the O -->
+        <g class="tet tetL"><path d="M67.71,0h67.7v136.6h-33.85V45.53H67.71z"/></g><!-- L: right tower, completes the board -->
+      </g>
+      <!-- The offcuts: the die-cut's waste. Each is a rect trimmed to the
+           exact boolean scrap by the waste mask, revealed by the same
+           behind-clip as the mark, then freed to fall once the blade has
+           fully passed it. Drawn BEHIND the mark: while attached they never
+           overlap it (waste is outside the outline by definition), and once
+           freed they slip behind the sheet instead of dragging across its
+           face. The eye slug stays visible through the eye's knockout,
+           drops behind the mark, and re-emerges under the jaw. -->
+      <g clip-path="url(#otc-cut)">
+        <g class="offcut oc1"><g mask="url(#otc-waste)"><rect x="0" y="0" width="55" height="62.6"/></g></g><!-- left shoulder -->
+        <g class="offcut oc2"><g mask="url(#otc-waste)"><rect x="55" y="0" width="80.41" height="65.8"/></g></g><!-- right shoulder -->
+        <g class="offcut oc3"><g mask="url(#otc-waste)"><rect x="0" y="139.3" width="62.42" height="42.9"/></g></g><!-- jaw steps -->
+        <g class="offcut oc4"><g mask="url(#otc-waste)"><rect x="56.5" y="36" width="24" height="41.5"/></g></g><!-- the eye slug -->
+      </g>
+      <!-- Canonical mark: one path, wheel knocked out by winding. The cutter
+           reveals it column by column as the blade frees it from the stack. -->
+      <path class="emblem" clip-path="url(#otc-cut)" d="M62.1,159.36l-29.74-.3-.16-19.16-32.2-.48L.51,62.4C2.1,31.79,25.71,7.09,55.06,1.31c40.99-8.07,80.19,22.22,80.23,64.25l.12,116.53-72.99.04-.32-22.77ZM78.98,67.86l-.15-22.22c-.04-5.45-6.4-8.46-10.98-8.08-4.81.4-9.73,4.33-9.7,9.8l.13,21.05c.03,5.4,5.83,8.29,10.5,8.22s10.23-2.89,10.19-8.77Z"/>
+      <!-- The blade: the same accent bar that will type the wordmark,
+           doing its first job. -->
+      <rect class="cut-bar" x="-4" y="-1" width="4" height="184.5"/>
       <g class="type" clip-path="url(#otc-type-wipe)">
         <polygon points="337.15 143.12 310.96 119.31 310.95 143.12 337.15 143.12"/>
         <polygon points="378.58 143.12 378.46 119.52 352.33 143.12 378.58 143.12"/>

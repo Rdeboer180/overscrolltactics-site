@@ -209,25 +209,35 @@ a { color: inherit; }
 
       0  board fades in             960  L tower · right lane, board full
     200  I hard-drops · the floor  1140  L locks — hold the full board
-    460  O falls · steers left     1260  LINE CLEAR — one flash, held
-    760  J tower · nub caps the O  1340  reveal: mark burns in, name types on
+    460  O falls · steers left     1300  THE CUT — blade crosses, 60ms/column
+    760  J tower · nub caps the O  1560  blade lifts, types the name; paint dries
 
-   The clear is the causal hinge: the blocks leave behind the flash and the
-   canonical mark is what remains, so the rounded glyph never has to morph
-   out of rigid blocks on camera. From there the burn does the ending — the
-   glyph holds accent, sinks through char, and settles on ink while the
-   wordmark types itself on and cools on the same ramp. The bloom dies
-   while the glyph is still hot: no orange may outlive the black. One
-   flash, one bloom, one decay — never a strobe (WCAG 2.3.1). */
+   The cutter pass is the causal hinge: an accent blade sweeps the stack one
+   column per tick, the die-cut mark is what it leaves behind, and the four
+   waste scraps — both shoulders, the jaw steps, the eye slug — detach and
+   tumble off with real gravity as the blade frees them. Game pieces move on
+   the grid clock; freed scraps fall continuously. The same bar then lifts,
+   crosses the gap, and types the wordmark: one tool, cut then signed. The
+   mark dries like paint — wet accent, char, ink — with a flat bleed that
+   wicks into the paper and retreats before the black sets. No orange may
+   outlive the black. One pass, one bleed — never a strobe (WCAG 2.3.1). */
 
 /* Base paint. The grid is a hint, not a texture; the paper seams keep the
-   stack reading as separate blocks until the clear takes them. */
+   stack reading as separate blocks until the cutter takes them. */
 .grid { stroke: var(--ink); stroke-opacity: 0.08; fill: none; opacity: 0; }
 .tet  { opacity: 0; }
 .tet path,
 .tet rect { fill: var(--ember-hot); stroke: var(--paper); stroke-width: 1; }
-.clear-flash { fill: #fff; opacity: 0; }
-.emblem { fill: var(--ink); opacity: 0; }
+/* Cutter rig. The clip rects rest open — the finished mark must survive
+   no-JS and between replays — and the play animations pull them shut from
+   t=0 with their backwards fill. Offcuts carry the stack's settled colour
+   so the cut is seamless at the blade. */
+.cut-behind, .cut-ahead { transform: translateX(0); }
+/* The blade shows dark against the orange sheet; the same bar shows accent
+   against the paper when it returns to type. Visibility follows the ground. */
+.cut-bar { fill: var(--ink); opacity: 0; }
+.offcut  { fill: var(--accent); transform-box: fill-box; transform-origin: center; }
+.emblem  { fill: var(--ink); opacity: 0; }
 .type   { fill: var(--ink); }
 /* Wipe rect and caret live in user space; both step the full width of the
    wordmark, so one shared travel distance keeps the caret welded to the edge.
@@ -257,44 +267,60 @@ a { color: inherit; }
 .burn-halo { fill: var(--ember-hot); }
 .burn-core { fill: var(--ember-hot); }
 
-/* The board establishes first, empty, and leaves with the clear. */
+/* The board establishes first, empty, and leaves as the cutter starts. */
 .play .grid { animation: fade-in 140ms linear both,
-                         fade-out 80ms linear 1340ms both; }
+                         fade-out 80ms linear 1300ms both; }
 /* Groups carry the travel; children carry the lock beat, so the two
    transforms never fight. Travel is linear ticks — mechanical while moving,
    polish only after the clear. */
 .play .tetI { animation: show 1ms steps(1, end) 200ms both,
                          tetI-drop 240ms steps(4, end) 200ms both,
-                         tet-off 1ms steps(1, end) 1340ms both; }
+                         tet-off 1ms steps(1, end) 1560ms both; }
 .play .tetI > * { animation: tet-lock 120ms linear 440ms both; }
 .play .tetO { animation: show 1ms steps(1, end) 460ms both,
                          tetO-path 280ms linear 460ms both,
-                         tet-off 1ms steps(1, end) 1340ms both; }
+                         tet-off 1ms steps(1, end) 1560ms both; }
 .play .tetO > * { animation: tet-lock 120ms linear 740ms both; }
 .play .tetJ { animation: show 1ms steps(1, end) 760ms both,
                          tower-drop 180ms steps(3, end) 760ms both,
-                         tet-off 1ms steps(1, end) 1340ms both; }
+                         tet-off 1ms steps(1, end) 1560ms both; }
 .play .tetJ > * { animation: tet-lock 120ms linear 940ms both; }
 .play .tetL { animation: show 1ms steps(1, end) 960ms both,
                          tower-drop 180ms steps(3, end) 960ms both,
-                         tet-off 1ms steps(1, end) 1340ms both; }
+                         tet-off 1ms steps(1, end) 1560ms both; }
 .play .tetL > * { animation: tet-lock 120ms linear 1140ms both; }
-.play .clear-flash { animation: line-clear 240ms linear 1260ms both; }
-.play .emblem { animation: emblem-set 640ms linear 1340ms both; }
-/* The wordmark types itself on in twelve 35ms cells, then cools with the
-   emblem so the mark and the name go out together rather than in sequence. */
-.play .type-wipe  { animation: type-wipe 420ms steps(12, end) 1340ms both; }
-.play .type-caret { animation: type-wipe 420ms steps(12, end) 1340ms both,
-                               caret-out 420ms linear 1340ms both; }
-.play .type       { animation: type-cool 640ms linear 1390ms both; }
-/* The bloom rides the reveal and dies while the glyph still holds accent —
-   the heat leaves before the ink sets, so no orange survives the black. */
-.play .burn-core  { animation: burn-core 300ms cubic-bezier(0.22, 1, 0.36, 1) 1340ms both; }
-.play .burn-halo  { animation: burn-halo 420ms cubic-bezier(0.22, 1, 0.36, 1) 1340ms both; }
+/* The cutter pass: blade and both clip edges jump together, one column per
+   60ms tick — the same clock the pieces fell on. Ahead of the blade the
+   stack remains; behind it, the cut mark and its scraps. */
+.play .cut-behind { animation: cut-sweep-behind 240ms steps(4, end) 1300ms both; }
+.play .cut-ahead  { animation: cut-sweep-ahead 240ms steps(4, end) 1300ms both; }
+.play .cut-bar    { animation: cut-sweep-bar 240ms steps(4, end) 1300ms both,
+                               caret-out 240ms linear 1300ms both; }
+/* Offcuts drop once the blade has fully passed them — a short attached
+   beat, then gravity. Scraps are no longer game pieces, so they fall
+   continuously and tumble; the game is over, the shop floor is real. */
+.play .oc1 { animation: oc-fall-l 500ms cubic-bezier(0.5, 0, 0.9, 0.6) 1430ms both, oc-dry 500ms linear 1430ms both; }
+.play .oc3 { animation: oc-fall-jaw 380ms cubic-bezier(0.5, 0, 0.9, 0.6) 1460ms both, oc-dry 380ms linear 1460ms both; }
+.play .oc4 { animation: oc-fall-slug 500ms cubic-bezier(0.5, 0, 0.9, 0.6) 1500ms both, oc-dry 500ms linear 1500ms both; }
+.play .oc2 { animation: oc-fall-r 500ms cubic-bezier(0.5, 0, 0.9, 0.6) 1550ms both, oc-dry 500ms linear 1550ms both; }
+/* The paint dries: the cut mark holds wet accent, sinks through char, and
+   sets as the exact header ink. */
+.play .emblem { animation: emblem-dry 1050ms linear 1300ms both; }
+/* The same bar returns for its second job: the wordmark types itself on in
+   twelve 35ms cells, then dries on the same ramp as the mark. */
+.play .type-wipe  { animation: type-wipe 420ms steps(12, end) 1560ms both; }
+.play .type-caret { animation: type-wipe 420ms steps(12, end) 1560ms both,
+                               caret-out 420ms linear 1560ms both; }
+.play .type       { animation: type-cool 640ms linear 1620ms both; }
+/* The wet bleed: flat pigment wicking a few pixels into the paper once the
+   mark is whole, retreating as it dries. Gone well before the ink sets —
+   no orange survives the black. */
+.play .burn-core  { animation: burn-core 300ms cubic-bezier(0.22, 1, 0.36, 1) 1560ms both; }
+.play .burn-halo  { animation: burn-halo 420ms cubic-bezier(0.22, 1, 0.36, 1) 1560ms both; }
 
-.play .hero-line  { animation: rise-in 0.45s ease-out 1.9s both; }
-.play .hero-cta   { animation: rise-in 0.45s ease-out 2.02s both; }
-.play .scroll-cue { animation: fade-in 0.4s ease-out 2.18s both, cue-nudge 1.2s ease-in-out 2.6s 3; }
+.play .hero-line  { animation: rise-in 0.45s ease-out 2.15s both; }
+.play .hero-cta   { animation: rise-in 0.45s ease-out 2.27s both; }
+.play .scroll-cue { animation: fade-in 0.4s ease-out 2.43s both, cue-nudge 1.2s ease-in-out 2.9s 3; }
 
 @keyframes show { to { opacity: 1; } }
 @keyframes fade-out { to { opacity: 0; } }
@@ -320,23 +346,30 @@ a { color: inherit; }
   100% { fill: var(--accent); transform: translateY(0); }
 }
 @keyframes tet-off { to { opacity: 0; } }
-/* One flash, held for a beat, gone. A single event — never repeated. */
-@keyframes line-clear {
-  0%   { opacity: 0; }
-  25%  { opacity: 0.92; }
-  75%  { opacity: 0.92; }
-  100% { opacity: 0; }
-}
-/* The burn. Once the mark is one solid glyph it cools in place: it holds the
-   accent long enough to register as the finished shape, sinks through char,
-   and settles on ink. This is the slowest move in the sequence on purpose —
-   the whole build exists to arrive here, so the last thing the eye does is
-   watch the orange go out. */
-@keyframes emblem-set {
-  0%   { opacity: 0; fill: var(--accent); }
-  7%   { opacity: 1; fill: var(--accent); }
-  30%  { fill: var(--accent); }
-  62%  { fill: var(--ember-char); }
+/* The blade and its two clip edges travel the board in four column ticks.
+   The bar rides just behind the cut edge. */
+@keyframes cut-sweep-behind { from { transform: translateX(-137.5px); } to { transform: translateX(0); } }
+@keyframes cut-sweep-ahead  { from { transform: translateX(0); } to { transform: translateX(137.5px); } }
+@keyframes cut-sweep-bar    { from { transform: translateX(0); } to { transform: translateX(139px); } }
+/* Scraps: continuous gravity, a little tumble, exits chosen so nothing
+   drifts into the wordmark's lane. The clip swallows them at its edges. */
+@keyframes oc-fall-l    { to { transform: translate(-46px, 236px) rotate(-16deg); } }
+@keyframes oc-fall-r    { to { transform: translate(-10px, 240px) rotate(7deg); } }
+@keyframes oc-fall-jaw  { to { transform: translate(-18px, 110px) rotate(-8deg); } }
+@keyframes oc-fall-slug { to { transform: translate(6px, 200px) rotate(12deg); } }
+/* Freed scraps are thin — they dry first, darkening as they fall. This is
+   also what keeps the eye slug legible while it tumbles over the wet mark. */
+@keyframes oc-dry { to { fill: #8a2d08; } }
+/* The paint dries. The blade exposes the mark wet — brighter than the
+   settled stack, which is what makes the cut legible — then the pigment
+   deepens to accent, sinks through char, and sets as ink. Slowest move in
+   the sequence on purpose — the whole build exists to arrive here, so the
+   last thing the eye does is watch the orange go out. */
+@keyframes emblem-dry {
+  0%   { opacity: 1; fill: var(--ember-hot); }
+  26%  { fill: var(--ember-hot); }
+  48%  { fill: var(--accent); }
+  72%  { fill: var(--ember-char); }
   100% { opacity: 1; fill: var(--ink); }
 }
 /* The bloom: flare fast, dissipate slow, drifting outward as it cools.
@@ -385,15 +418,17 @@ a { color: inherit; }
    path and the wordmark are the only things visible — never a stray piece. */
 .hero:not(.play) .grid,
 .hero:not(.play) .tet,
-.hero:not(.play) .clear-flash,
+.hero:not(.play) .offcut,
+.hero:not(.play) .cut-bar,
 .hero:not(.play) .burn,
 .hero:not(.play) .type-caret { opacity: 0; }
 .hero:not(.play) .emblem { opacity: 1; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .play .grid, .play .tet, .play .clear-flash { animation: none; opacity: 0; }
+  .play .grid, .play .tet, .play .offcut, .play .cut-bar { animation: none; opacity: 0; }
   .play .tet > * { animation: none; }
+  .play .cut-behind, .play .cut-ahead { animation: none; transform: translateX(0); }
   .play .burn { animation: none; opacity: 0; }
   .play .type-wipe { animation: none; transform: translateX(0); }
   .play .type-caret { animation: none; opacity: 0; }
