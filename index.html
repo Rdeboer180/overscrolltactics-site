@@ -69,16 +69,17 @@
              the name types itself on the way a high-score line does. -->
         <clipPath id="otc-type-wipe"><rect class="type-wipe" x="158" y="28" width="346" height="156"/></clipPath>
       </defs>
-      <!-- The playfield: a 3×4 board on the emblem's footprint, cell
-           45.14 × 45.53. Faint interior grid while pieces are in play;
+      <!-- The playfield: a 4×4 board on the emblem's footprint, cell
+           33.85 × 45.53. Faint interior grid while pieces are in play;
            it leaves with the line clear. -->
-      <path class="grid" d="M45.14,0v182.13M90.27,0v182.13M0,45.53h135.41M0,91.07h135.41M0,136.6h135.41"/>
-      <!-- Three tetrominoes fill the board exactly. Pieces enter from the
-           board's top edge, move only in whole-cell steps, and each one
-           stops where the stack already is. -->
-      <g class="tet tet1"><path d="M0,91.07h45.14v45.53h90.27v45.53H0z"/></g><!-- J: floor bar + left riser -->
-      <g class="tet tet2"><rect x="45.14" y="45.53" width="90.27" height="91.07"/></g><!-- O: falls in the left lane, steers right -->
-      <g class="tet tet3"><path d="M0,0h135.41v45.53H45.14v45.54H0z"/></g><!-- L: top bar, foot drops into the last gap -->
+      <path class="grid" d="M33.85,0v182.13M67.71,0v182.13M101.56,0v182.13M0,45.53h135.41M0,91.07h135.41M0,136.6h135.41"/>
+      <!-- Four classic tetrominoes fill the board exactly: I, O, J, L.
+           Pieces enter from the board's top edge, move only in whole-cell
+           steps, and every path is collision-legal against the stack. -->
+      <g class="tet tetI"><rect x="0" y="136.6" width="135.41" height="45.53"/></g><!-- I: the floor, hard-dropped first -->
+      <g class="tet tetO"><rect x="33.85" y="45.53" width="67.71" height="91.07"/></g><!-- O: falls the right lane, steers left onto the I -->
+      <g class="tet tetJ"><path d="M0,0h67.71v45.53H33.86v91.07H0z"/></g><!-- J: left tower, its nub caps the O -->
+      <g class="tet tetL"><path d="M67.71,0h67.7v136.6h-33.85V45.53H67.71z"/></g><!-- L: right tower, completes the board -->
       <!-- The line-clear flash: the board blanks for a beat, and the mark
            is what's left when it passes. -->
       <rect class="clear-flash" x="-1" y="-1" width="137.41" height="184.13"/>

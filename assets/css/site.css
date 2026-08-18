@@ -198,24 +198,27 @@ a { color: inherit; }
 }
 
 /* ----- Playfield timeline (only when .play is set) -----
-   One board, one grammar. A 3×4 grid sits on the emblem's footprint and
-   three tetrominoes fill it exactly: a J, an O, an L. Every move is a
-   whole-cell jump on a steps() clock — spawn, steer, drop, collide, clear,
-   reveal — and easing is reserved for what happens after the clear. The
-   falling piece is the hottest orange on the board; it cools to accent at
-   its lock, with a tick of compression so the collision reads.
+   One board, one grammar. A 4×4 grid sits on the emblem's footprint and
+   four classic tetrominoes fill it exactly: I, O, J, L. Every move is a
+   whole-cell jump on one gravity clock — 60ms a row for every piece — and
+   every path is collision-legal against the stack. Easing is reserved for
+   what happens after the clear. The falling piece is the hottest orange on
+   the board; it cools to accent at its lock, with a tick of compression so
+   the collision reads. Like the real game, the next piece spawns at the
+   previous lock — the lock beat plays out under the next fall.
 
-      0  board fades in            1040  L drops · foot finds the last gap
-    220  J falls · 4 ticks         1180  board full — hold the shape
-    620  O falls · steers right    1320  LINE CLEAR — one flash, held
-    880  O locks on the J         1400  reveal: mark burns in, name types on
+      0  board fades in             960  L tower · right lane, board full
+    200  I hard-drops · the floor  1140  L locks — hold the full board
+    460  O falls · steers left     1260  LINE CLEAR — one flash, held
+    760  J tower · nub caps the O  1340  reveal: mark burns in, name types on
 
    The clear is the causal hinge: the blocks leave behind the flash and the
    canonical mark is what remains, so the rounded glyph never has to morph
-   out of rigid blocks on camera. From there the burn does the ending —
-   the glyph holds accent, sinks through char, and settles on ink while the
-   wordmark types itself on and cools on the same ramp. One flash, one
-   bloom, one decay — never a strobe (WCAG 2.3.1). */
+   out of rigid blocks on camera. From there the burn does the ending — the
+   glyph holds accent, sinks through char, and settles on ink while the
+   wordmark types itself on and cools on the same ramp. The bloom dies
+   while the glyph is still hot: no orange may outlive the black. One
+   flash, one bloom, one decay — never a strobe (WCAG 2.3.1). */
 
 /* Base paint. The grid is a hint, not a texture; the paper seams keep the
    stack reading as separate blocks until the clear takes them. */
@@ -256,54 +259,58 @@ a { color: inherit; }
 
 /* The board establishes first, empty, and leaves with the clear. */
 .play .grid { animation: fade-in 140ms linear both,
-                         fade-out 80ms linear 1400ms both; }
+                         fade-out 80ms linear 1340ms both; }
 /* Groups carry the travel; children carry the lock beat, so the two
    transforms never fight. Travel is linear ticks — mechanical while moving,
    polish only after the clear. */
-.play .tet1 { animation: show 1ms steps(1, end) 220ms both,
-                         tet1-drop 240ms steps(4, end) 220ms both,
-                         tet-off 1ms steps(1, end) 1400ms both; }
-.play .tet1 > * { animation: tet-lock 120ms linear 460ms both; }
-.play .tet2 { animation: show 1ms steps(1, end) 620ms both,
-                         tet2-path 320ms linear 620ms both,
-                         tet-off 1ms steps(1, end) 1400ms both; }
-.play .tet2 > * { animation: tet-lock 120ms linear 880ms both; }
-.play .tet3 { animation: show 1ms steps(1, end) 1040ms both,
-                         tet3-drop 140ms steps(2, end) 1040ms both,
-                         tet-off 1ms steps(1, end) 1400ms both; }
-.play .tet3 > * { animation: tet-lock 120ms linear 1180ms both; }
-.play .clear-flash { animation: line-clear 240ms linear 1320ms both; }
-.play .emblem { animation: emblem-set 720ms linear 1400ms both; }
+.play .tetI { animation: show 1ms steps(1, end) 200ms both,
+                         tetI-drop 240ms steps(4, end) 200ms both,
+                         tet-off 1ms steps(1, end) 1340ms both; }
+.play .tetI > * { animation: tet-lock 120ms linear 440ms both; }
+.play .tetO { animation: show 1ms steps(1, end) 460ms both,
+                         tetO-path 280ms linear 460ms both,
+                         tet-off 1ms steps(1, end) 1340ms both; }
+.play .tetO > * { animation: tet-lock 120ms linear 740ms both; }
+.play .tetJ { animation: show 1ms steps(1, end) 760ms both,
+                         tower-drop 180ms steps(3, end) 760ms both,
+                         tet-off 1ms steps(1, end) 1340ms both; }
+.play .tetJ > * { animation: tet-lock 120ms linear 940ms both; }
+.play .tetL { animation: show 1ms steps(1, end) 960ms both,
+                         tower-drop 180ms steps(3, end) 960ms both,
+                         tet-off 1ms steps(1, end) 1340ms both; }
+.play .tetL > * { animation: tet-lock 120ms linear 1140ms both; }
+.play .clear-flash { animation: line-clear 240ms linear 1260ms both; }
+.play .emblem { animation: emblem-set 640ms linear 1340ms both; }
 /* The wordmark types itself on in twelve 35ms cells, then cools with the
    emblem so the mark and the name go out together rather than in sequence. */
-.play .type-wipe  { animation: type-wipe 420ms steps(12, end) 1400ms both; }
-.play .type-caret { animation: type-wipe 420ms steps(12, end) 1400ms both,
-                               caret-out 420ms linear 1400ms both; }
-.play .type       { animation: type-cool 700ms linear 1450ms both; }
-/* The bloom rides the reveal, not the locks: heat leaving the mark once,
-   faint enough that the burn on the glyph stays the focal event. */
-.play .burn-core  { animation: burn-core 560ms cubic-bezier(0.22, 1, 0.36, 1) 1400ms both; }
-.play .burn-halo  { animation: burn-halo 900ms cubic-bezier(0.22, 1, 0.36, 1) 1400ms both; }
+.play .type-wipe  { animation: type-wipe 420ms steps(12, end) 1340ms both; }
+.play .type-caret { animation: type-wipe 420ms steps(12, end) 1340ms both,
+                               caret-out 420ms linear 1340ms both; }
+.play .type       { animation: type-cool 640ms linear 1390ms both; }
+/* The bloom rides the reveal and dies while the glyph still holds accent —
+   the heat leaves before the ink sets, so no orange survives the black. */
+.play .burn-core  { animation: burn-core 300ms cubic-bezier(0.22, 1, 0.36, 1) 1340ms both; }
+.play .burn-halo  { animation: burn-halo 420ms cubic-bezier(0.22, 1, 0.36, 1) 1340ms both; }
 
-.play .hero-line  { animation: rise-in 0.45s ease-out 1.98s both; }
-.play .hero-cta   { animation: rise-in 0.45s ease-out 2.1s both; }
-.play .scroll-cue { animation: fade-in 0.4s ease-out 2.26s both, cue-nudge 1.2s ease-in-out 2.76s 3; }
+.play .hero-line  { animation: rise-in 0.45s ease-out 1.9s both; }
+.play .hero-cta   { animation: rise-in 0.45s ease-out 2.02s both; }
+.play .scroll-cue { animation: fade-in 0.4s ease-out 2.18s both, cue-nudge 1.2s ease-in-out 2.6s 3; }
 
 @keyframes show { to { opacity: 1; } }
 @keyframes fade-out { to { opacity: 0; } }
 
-/* Gravity on a grid clock: every jump is one whole row. */
-@keyframes tet1-drop { from { transform: translateY(-183px); } to { transform: translateY(0); } }
-@keyframes tet3-drop { from { transform: translateY(-92px); }  to { transform: translateY(0); } }
-/* The O: two ticks down the left lane, one sidestep right, one tick into the
-   slot beside the riser. The steer is the single lateral gesture — it exists
-   so the fall reads as played, not scheduled. */
-@keyframes tet2-path {
-  0%       { transform: translate(-45.14px, -138px); animation-timing-function: steps(1, end); }
-  19%      { transform: translate(-45.14px, -91.3px); animation-timing-function: steps(1, end); }
-  38%      { transform: translate(-45.14px, -45.8px); animation-timing-function: steps(1, end); }
-  62%      { transform: translate(0px, -45.8px); animation-timing-function: steps(1, end); }
-  81%, 100% { transform: translate(0, 0); }
+/* Gravity on a grid clock: every jump is one whole row, 60ms a row. */
+@keyframes tetI-drop  { from { transform: translateY(-183px); } to { transform: translateY(0); } }
+@keyframes tower-drop { from { transform: translateY(-138px); } to { transform: translateY(0); } }
+/* The O: two ticks down the right lane — nothing there yet to stop it —
+   one sidestep left, one tick onto the I. The steer is the single lateral
+   gesture; it exists so the fall reads as played, not scheduled. */
+@keyframes tetO-path {
+  0%   { transform: translate(33.85px, -138px); animation-timing-function: steps(1, end); }
+  25%  { transform: translate(33.85px, -92px); animation-timing-function: steps(1, end); }
+  50%  { transform: translate(33.85px, -46px); animation-timing-function: steps(1, end); }
+  75%  { transform: translate(0px, -46px); animation-timing-function: steps(1, end); }
+  100% { transform: translate(0, 0); }
 }
 /* The lock beat: the falling heat collides — a tick of pale flash, 1.5px of
    compression — and settles to resting accent. */
