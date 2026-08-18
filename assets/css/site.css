@@ -148,8 +148,9 @@ a { color: inherit; }
 }
 
 /* Lockup box reserves the *finished* logo (503.11 × 182.13) so nothing shifts.
-   The SVG itself runs 30u taller so the key block has somewhere to fall from
-   and land; that overflow sits inside the lockup's bottom margin. */
+   The SVG viewBox runs 30u taller; the extra sits in the lockup's bottom
+   margin. Pieces spawn above the viewBox and are clipped by it, so they
+   enter from the board's top edge like a real playfield. */
 .lockup {
   position: relative;
   width: var(--L);
@@ -196,36 +197,33 @@ a { color: inherit; }
   background: var(--accent);
 }
 
-/* ----- Block-assembly timeline (only when .play is set) -----
-   The emblem fills from its floor upward. Seven pieces stack bottom to top,
-   each landing on the one below it, while the right third stays open as a
-   well. The eighth piece drops the full height of that shaft and locks its
-   foot into the bottom-right overhang — the right edge and the lowest step
-   complete in one move. Everything is clipped to the canonical silhouette, so
-   the arch, the straight sides and the wheel knockout stay exact throughout.
+/* ----- Playfield timeline (only when .play is set) -----
+   One board, one grammar. A 3×4 grid sits on the emblem's footprint and
+   three tetrominoes fill it exactly: a J, an O, an L. Every move is a
+   whole-cell jump on a steps() clock — spawn, steer, drop, collide, clear,
+   reveal — and easing is reserved for what happens after the clear. The
+   falling piece is the hottest orange on the board; it cools to accent at
+   its lock, with a tick of compression so the collision reads.
 
-   Orange is motion only: pieces land accent, turn ink at the lock, then hand
-   off to the single canonical path. Transform + opacity (plus one paint-only
-   `fill`), so nothing here touches layout.
+      0  board fades in            1040  L drops · foot finds the last gap
+    220  J falls · 4 ticks         1180  board full — hold the shape
+    620  O falls · steers right    1320  LINE CLEAR — one flash, held
+    880  O locks on the J         1400  reveal: mark burns in, name types on
 
-   110  key block falls               990  well piece · 240ms down the shaft
-   330  piece 1 · 60ms stagger       1230  LOCK — pulse, settle, burn-off
-   690  piece 7 lands, 120ms pause   1330  wordmark      1425  canonical mark
+   The clear is the causal hinge: the blocks leave behind the flash and the
+   canonical mark is what remains, so the rounded glyph never has to morph
+   out of rigid blocks on camera. From there the burn does the ending —
+   the glyph holds accent, sinks through char, and settles on ink while the
+   wordmark types itself on and cools on the same ramp. One flash, one
+   bloom, one decay — never a strobe (WCAG 2.3.1). */
 
-   The lock is the one earned focal moment, so it gets the expressive motion:
-   the whole stack takes a 2px impact settle, the pieces cool from accent
-   through char to ink instead of snapping black, and an ember bloom bleeds
-   past the silhouette into the paper before it dies. One bloom, one decay —
-   never a strobe. */
-
-/* Base paint. Pieces are accent while in motion, never at rest. */
-.found  { fill: var(--accent); opacity: 0; }
-/* Paper hairline between pieces so the stack reads as separate blocks while it
-   builds. The clip trims it at the silhouette, so the mark never gets an
-   outline — and it fades with the fill at the lock, before the canonical path
-   takes over, so the finished mark stays seamless. */
-.pieces { fill: var(--accent); stroke: var(--paper); stroke-width: 1; stroke-opacity: 1; }
-.pc     { opacity: 0; }
+/* Base paint. The grid is a hint, not a texture; the paper seams keep the
+   stack reading as separate blocks until the clear takes them. */
+.grid { stroke: var(--ink); stroke-opacity: 0.08; fill: none; opacity: 0; }
+.tet  { opacity: 0; }
+.tet path,
+.tet rect { fill: var(--ember-hot); stroke: var(--paper); stroke-width: 1; }
+.clear-flash { fill: #fff; opacity: 0; }
 .emblem { fill: var(--ink); opacity: 0; }
 .type   { fill: var(--ink); }
 /* Wipe rect and caret live in user space; both step the full width of the
@@ -236,10 +234,6 @@ a { color: inherit; }
 .type-wipe,
 .type-caret { transform: translateX(0); }
 .type-caret { fill: var(--accent); opacity: 0; }
-/* Hard-drop streak behind the key block */
-.trail-near { stop-color: var(--accent); stop-opacity: 0.5; }
-.trail-far  { stop-color: var(--accent); stop-opacity: 0; }
-.trail      { opacity: 0; }
 /* Burn-off bloom. The svg is sized to the emblem's share of the lockup so
    the two paths land exactly on the mark; overflow stays visible so the
    glow can leave the canvas and bleed into the paper. */
@@ -260,102 +254,72 @@ a { color: inherit; }
 .burn-halo { fill: var(--ember-hot); }
 .burn-core { fill: var(--ember-hot); }
 
-.play .keyblock { animation: keyfall 1280ms 110ms both; }
-.play .found    { animation: keyfade 1280ms linear 110ms both; }
-.play .trail    { animation: keytrail 1280ms linear 110ms both; }
-.play .pieces { animation: pc-ink 195ms linear 1230ms both,
-                           pc-off 1ms steps(1, end) 1425ms both; }
-.play .emblem { animation: emblem-set 520ms linear 1370ms both; }
+/* The board establishes first, empty, and leaves with the clear. */
+.play .grid { animation: fade-in 140ms linear both,
+                         fade-out 80ms linear 1400ms both; }
+/* Groups carry the travel; children carry the lock beat, so the two
+   transforms never fight. Travel is linear ticks — mechanical while moving,
+   polish only after the clear. */
+.play .tet1 { animation: show 1ms steps(1, end) 220ms both,
+                         tet1-drop 240ms steps(4, end) 220ms both,
+                         tet-off 1ms steps(1, end) 1400ms both; }
+.play .tet1 > * { animation: tet-lock 120ms linear 460ms both; }
+.play .tet2 { animation: show 1ms steps(1, end) 620ms both,
+                         tet2-path 320ms linear 620ms both,
+                         tet-off 1ms steps(1, end) 1400ms both; }
+.play .tet2 > * { animation: tet-lock 120ms linear 880ms both; }
+.play .tet3 { animation: show 1ms steps(1, end) 1040ms both,
+                         tet3-drop 140ms steps(2, end) 1040ms both,
+                         tet-off 1ms steps(1, end) 1400ms both; }
+.play .tet3 > * { animation: tet-lock 120ms linear 1180ms both; }
+.play .clear-flash { animation: line-clear 240ms linear 1320ms both; }
+.play .emblem { animation: emblem-set 720ms linear 1400ms both; }
 /* The wordmark types itself on in twelve 35ms cells, then cools with the
    emblem so the mark and the name go out together rather than in sequence. */
-.play .type-wipe  { animation: type-wipe 420ms steps(12, end) 1300ms both; }
-.play .type-caret { animation: type-wipe 420ms steps(12, end) 1300ms both,
-                               caret-out 420ms linear 1300ms both; }
-.play .type       { animation: type-cool 700ms linear 1350ms both; }
-/* The burn fires at the lock. The bloom is only the edge of the event — a
-   thin heat rim leaving the silhouette — so both layers stay faint. The
-   burn itself lives on the glyph, in `emblem-set` below. The 2px settle is
-   the final piece's impact travelling through the stack. */
-.play .burn-core  { animation: burn-core 560ms cubic-bezier(0.22, 1, 0.36, 1) 1230ms both; }
-.play .burn-halo  { animation: burn-halo 900ms cubic-bezier(0.22, 1, 0.36, 1) 1230ms both; }
-.play .lockup-svg { animation: lock-settle 180ms cubic-bezier(0.3, 0.9, 0.4, 1) 1230ms both; }
+.play .type-wipe  { animation: type-wipe 420ms steps(12, end) 1400ms both; }
+.play .type-caret { animation: type-wipe 420ms steps(12, end) 1400ms both,
+                               caret-out 420ms linear 1400ms both; }
+.play .type       { animation: type-cool 700ms linear 1450ms both; }
+/* The bloom rides the reveal, not the locks: heat leaving the mark once,
+   faint enough that the burn on the glyph stays the focal event. */
+.play .burn-core  { animation: burn-core 560ms cubic-bezier(0.22, 1, 0.36, 1) 1400ms both; }
+.play .burn-halo  { animation: burn-halo 900ms cubic-bezier(0.22, 1, 0.36, 1) 1400ms both; }
 
-/* Gravity ticks: the stack falls in discrete grid steps, not a glide. This is
-   the thing that makes it read as a falling-block game rather than motion
-   graphics — five visible cells per drop, ~36ms a cell. */
-.play .pc { animation: drop-tick var(--pd, 180ms) steps(5, end) var(--pt) both,
-                       show 1ms steps(1, end) var(--pt) both; }
-/* Bottom to top. Each piece lands on the one below it, so its delay and its
-   slot both climb — the stack visibly grows upward. Uniform travel keeps the
-   fall speed constant, the way gravity would. */
-.play .pc1 { --pt: 330ms; }
-.play .pc2 { --pt: 390ms; }
-.play .pc3 { --pt: 450ms; }
-.play .pc4 { --pt: 510ms; }
-.play .pc5 { --pt: 570ms; }
-.play .pc6 { --pt: 630ms; }
-.play .pc7 { --pt: 690ms; }
-/* The well piece hard-drops instead of ticking: longer shaft, smooth and fast,
-   so the last move is unmistakably a different gesture from the stack. */
-.play .pc8 { --pt: 990ms; --pd: 240ms; --tv: -200px;
-             animation: drop-hard var(--pd) var(--pt) both,
-                        show 1ms steps(1, end) var(--pt) both; }
+.play .hero-line  { animation: rise-in 0.45s ease-out 1.98s both; }
+.play .hero-cta   { animation: rise-in 0.45s ease-out 2.1s both; }
+.play .scroll-cue { animation: fade-in 0.4s ease-out 2.26s both, cue-nudge 1.2s ease-in-out 2.76s 3; }
 
-.play .hero-line  { animation: rise-in 0.45s ease-out 1.59s both; }
-.play .hero-cta   { animation: rise-in 0.45s ease-out 1.71s both; }
-.play .scroll-cue { animation: fade-in 0.4s ease-out 1.85s both, cue-nudge 1.2s ease-in-out 2.35s 3; }
-
-/* Stepped fall — the steps() timing function does the quantising. */
-@keyframes drop-tick {
-  from { transform: translateY(var(--tv, -165px)); }
-  to   { transform: translateY(0); }
-}
-/* Accelerate under gravity, land with a 3u compression, snap back. No bounce. */
-@keyframes drop-hard {
-  0%   { transform: translateY(var(--tv, -165px)); animation-timing-function: cubic-bezier(0.45, 0, 0.75, 0.5); }
-  84%  { transform: translateY(3px);               animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1); }
-  100% { transform: translateY(0); }
-}
 @keyframes show { to { opacity: 1; } }
+@keyframes fade-out { to { opacity: 0; } }
 
-/* The key block hard-drops: smooth and fast, so it reads as a different gesture
-   from the stepped gravity of the pieces that stack on it. */
-@keyframes keyfall {
-  0%     { transform: translateY(-215px); animation-timing-function: cubic-bezier(0.45, 0, 0.75, 0.5); }
-  15.63% { transform: translateY(3px); animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1); }
-  17.19% { transform: translateY(0); }
-  87.50% { transform: translateY(0); animation-timing-function: cubic-bezier(0.4, 0, 1, 0.6); }
-  100%   { transform: translateY(16px); }
+/* Gravity on a grid clock: every jump is one whole row. */
+@keyframes tet1-drop { from { transform: translateY(-183px); } to { transform: translateY(0); } }
+@keyframes tet3-drop { from { transform: translateY(-92px); }  to { transform: translateY(0); } }
+/* The O: two ticks down the left lane, one sidestep right, one tick into the
+   slot beside the riser. The steer is the single lateral gesture — it exists
+   so the fall reads as played, not scheduled. */
+@keyframes tet2-path {
+  0%       { transform: translate(-45.14px, -138px); animation-timing-function: steps(1, end); }
+  19%      { transform: translate(-45.14px, -91.3px); animation-timing-function: steps(1, end); }
+  38%      { transform: translate(-45.14px, -45.8px); animation-timing-function: steps(1, end); }
+  62%      { transform: translate(0px, -45.8px); animation-timing-function: steps(1, end); }
+  81%, 100% { transform: translate(0, 0); }
 }
-/* Falls in bright, recedes to a floor the stack builds on — without that drop
-   in weight the floor and the pieces read as one orange mass. At the lock it
-   pulses back once and goes. One pulse, never a strobe: repeat flashing is a
-   seizure risk (WCAG 2.3.1), and the receding fade is too slow to count. */
-@keyframes keyfade {
-  0%     { opacity: 1; }
-  17.19% { opacity: 1; }
-  25.00% { opacity: 0.38; }
-  87.50% { opacity: 0.38; animation-timing-function: steps(1, end); }
-  90.63% { opacity: 1; animation-timing-function: steps(1, end); }
-  94.53% { opacity: 0.12; animation-timing-function: cubic-bezier(0.4, 0, 1, 0.6); }
-  100%   { opacity: 0; }
+/* The lock beat: the falling heat collides — a tick of pale flash, 1.5px of
+   compression — and settles to resting accent. */
+@keyframes tet-lock {
+  0%   { fill: var(--ember-hot); transform: translateY(0); }
+  35%  { fill: #ffc9a3; transform: translateY(1.5px); }
+  100% { fill: var(--accent); transform: translateY(0); }
 }
-/* The streak only exists while the block is moving fast. */
-@keyframes keytrail {
-  0%     { opacity: 1; }
-  11.00% { opacity: 1; }
-  15.63% { opacity: 0; }
-  100%   { opacity: 0; }
+@keyframes tet-off { to { opacity: 0; } }
+/* One flash, held for a beat, gone. A single event — never repeated. */
+@keyframes line-clear {
+  0%   { opacity: 0; }
+  25%  { opacity: 0.92; }
+  75%  { opacity: 0.92; }
+  100% { opacity: 0; }
 }
-
-/* At the lock the blocks stop being blocks — the seams close, but the colour
-   does not move yet. The stack stays fully hot so the canonical path can take
-   over at the same orange and the handoff is invisible. */
-@keyframes pc-ink {
-  0%   { fill: var(--accent); }
-  100% { fill: var(--accent); stroke-opacity: 0; }
-}
-@keyframes pc-off { to { opacity: 0; } }
 /* The burn. Once the mark is one solid glyph it cools in place: it holds the
    accent long enough to register as the finished shape, sinks through char,
    and settles on ink. This is the slowest move in the sequence on purpose —
@@ -380,11 +344,6 @@ a { color: inherit; }
   0%   { opacity: 0; transform: scale(1); }
   18%  { opacity: 0.2; }
   100% { opacity: 0; transform: scale(1.05); }
-}
-@keyframes lock-settle {
-  0%   { transform: translateY(0); }
-  35%  { transform: translateY(2px); }
-  100% { transform: translateY(0); }
 }
 @keyframes type-wipe {
   from { transform: translateX(-346px); }
@@ -417,20 +376,18 @@ a { color: inherit; }
 
 /* Resting state: no-JS, reduced motion, and between replays. The canonical
    path and the wordmark are the only things visible — never a stray piece. */
-.hero:not(.play) .found,
-.hero:not(.play) .trail,
+.hero:not(.play) .grid,
+.hero:not(.play) .tet,
+.hero:not(.play) .clear-flash,
 .hero:not(.play) .burn,
-.hero:not(.play) .type-caret,
-.hero:not(.play) .pieces { opacity: 0; }
+.hero:not(.play) .type-caret { opacity: 0; }
 .hero:not(.play) .emblem { opacity: 1; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .play .keyblock { animation: none; }
-  .play .found, .play .trail, .play .pieces { animation: none; opacity: 0; }
-  .play .pc { animation: none; }
+  .play .grid, .play .tet, .play .clear-flash { animation: none; opacity: 0; }
+  .play .tet > * { animation: none; }
   .play .burn { animation: none; opacity: 0; }
-  .play .lockup-svg { animation: none; }
   .play .type-wipe { animation: none; transform: translateX(0); }
   .play .type-caret { animation: none; opacity: 0; }
   .play .emblem { animation: none; opacity: 1; }

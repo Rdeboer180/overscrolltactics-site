@@ -64,36 +64,24 @@
     </svg>
     <svg class="lockup-svg" viewBox="0 0 503.11 212.35" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
       <defs>
-        <linearGradient id="otc-trail" x1="0" x2="0" y1="1" y2="0">
-          <stop class="trail-near" offset="0"/><stop class="trail-far" offset="1"/>
-        </linearGradient>
-        <clipPath id="otc-emblem"><path d="M62.1,159.36l-29.74-.3-.16-19.16-32.2-.48L.51,62.4C2.1,31.79,25.71,7.09,55.06,1.31c40.99-8.07,80.19,22.22,80.23,64.25l.12,116.53-72.99.04-.32-22.77ZM78.98,67.86l-.15-22.22c-.04-5.45-6.4-8.46-10.98-8.08-4.81.4-9.73,4.33-9.7,9.8l.13,21.05c.03,5.4,5.83,8.29,10.5,8.22s10.23-2.89,10.19-8.77Z"/></clipPath>
         <!-- Arcade readout wipe. The rect starts fully left of the wordmark
              and steps right in twelve cells — roughly a glyph per cell, so
              the name types itself on the way a high-score line does. -->
         <clipPath id="otc-type-wipe"><rect class="type-wipe" x="158" y="28" width="346" height="156"/></clipPath>
       </defs>
-      <!-- The key block: hard-drops through an empty well behind a speed
-           streak, then becomes the floor the mark stacks on. The group
-           carries the fall; the fill and the streak fade independently. -->
-      <g class="keyblock">
-        <rect class="trail" x="0.02" y="63" width="135.34" height="80" fill="url(#otc-trail)"/>
-        <polygon class="found" points="59.2,184.1 58.88,161.33 29.14,161.03 28.98,141.87 .02,141.38 .02,210.35 135.36,210.35 135.36,184.05"/>
-      </g>
-      <!-- Eight pieces that tessellate the silhouette; the clip supplies arch, sides and wheel. -->
-      <!-- Eight pieces that tessellate the silhouette, stacking bottom to top.
-           The right shaft stays open as a well until pc8 drops the full height
-           of it and locks its foot into the bottom-right overhang. -->
-      <g class="pieces" clip-path="url(#otc-emblem)">
-        <polygon class="pc pc1" points="-8,139.7 98.3,139.7 98.3,160.1 -8,160.1"/><!-- floor of the well -->
-        <polygon class="pc pc2" points="-8,111.5 62.7,111.5 62.7,140.7 -8,140.7"/><!-- row C, left + middle -->
-        <polygon class="pc pc3" points="61.7,83.5 98.3,83.5 98.3,140.7 61.7,140.7"/><!-- vertical domino against the shaft -->
-        <polygon class="pc pc4" points="-8,83.5 62.7,83.5 62.7,112.5 -8,112.5"/><!-- row B, left + middle -->
-        <polygon class="pc pc5" points="-8,39.5 62.7,39.5 62.7,84.5 -8,84.5"/><!-- row A2, left + middle -->
-        <polygon class="pc pc6" points="61.7,-8 98.3,-8 98.3,84.5 61.7,84.5"/><!-- vertical domino, arch shoulder -->
-        <polygon class="pc pc7" points="-8,-8 62.7,-8 62.7,40.5 -8,40.5"/><!-- row A1, closes the arch -->
-        <polygon class="pc pc8" points="97.8,-8 143.41,-8 143.41,190.13 -8,190.13 -8,159.1 97.8,159.1"/><!-- the well piece -->
-      </g>
+      <!-- The playfield: a 3×4 board on the emblem's footprint, cell
+           45.14 × 45.53. Faint interior grid while pieces are in play;
+           it leaves with the line clear. -->
+      <path class="grid" d="M45.14,0v182.13M90.27,0v182.13M0,45.53h135.41M0,91.07h135.41M0,136.6h135.41"/>
+      <!-- Three tetrominoes fill the board exactly. Pieces enter from the
+           board's top edge, move only in whole-cell steps, and each one
+           stops where the stack already is. -->
+      <g class="tet tet1"><path d="M0,91.07h45.14v45.53h90.27v45.53H0z"/></g><!-- J: floor bar + left riser -->
+      <g class="tet tet2"><rect x="45.14" y="45.53" width="90.27" height="91.07"/></g><!-- O: falls in the left lane, steers right -->
+      <g class="tet tet3"><path d="M0,0h135.41v45.53H45.14v45.54H0z"/></g><!-- L: top bar, foot drops into the last gap -->
+      <!-- The line-clear flash: the board blanks for a beat, and the mark
+           is what's left when it passes. -->
+      <rect class="clear-flash" x="-1" y="-1" width="137.41" height="184.13"/>
       <!-- Canonical mark: one path, wheel knocked out by winding. -->
       <path class="emblem" d="M62.1,159.36l-29.74-.3-.16-19.16-32.2-.48L.51,62.4C2.1,31.79,25.71,7.09,55.06,1.31c40.99-8.07,80.19,22.22,80.23,64.25l.12,116.53-72.99.04-.32-22.77ZM78.98,67.86l-.15-22.22c-.04-5.45-6.4-8.46-10.98-8.08-4.81.4-9.73,4.33-9.7,9.8l.13,21.05c.03,5.4,5.83,8.29,10.5,8.22s10.23-2.89,10.19-8.77Z"/>
       <g class="type" clip-path="url(#otc-type-wipe)">
