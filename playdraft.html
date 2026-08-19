@@ -86,9 +86,13 @@
       <div class="screen">
         <video poster="/assets/video/playdraft-poster.jpg"
                width="1920" height="1080" controls loop muted playsinline preload="metadata"
-               aria-label="How to Play reel: pick a pack, set the rules, invite your group, draft on the clock, see the board decide, argue it, collect the cards, and take the debate public">
+               aria-label="How to Play reel: pick a pack, make it yours, draft on the clock, play DraftLab daily, earn DraftCoins, watch the board decide, see how competitive changes everything, why sleepers pay, argue it, and take the debate public">
           <source src="/assets/video/playdraft.webm" type="video/webm">
           <source src="/assets/video/playdraft.mp4" type="video/mp4">
+          <!-- Subtitles are also burned into the picture, so the reel reads
+               with sound off and in players that ignore text tracks; this
+               track adds selectable/searchablecaptions where supported. -->
+          <track kind="captions" src="/assets/video/playdraft.vtt" srclang="en" label="English" default>
         </video>
       </div>
     </div>
