@@ -793,53 +793,6 @@ h2 { font-size: clamp(2.1rem, 1.5rem + 2.6vw, 3.4rem); }
   max-width: 44ch;
 }
 
-/* ----- QR control -------------------------------------------------------
-   The link is the real control: click it on a phone and it just opens. On a
-   pointer device, hovering or focusing it grows a scan panel out of the
-   button, so the desktop visitor can get it onto the device that can run it.
-   The panel is decorative for assistive tech — the anchor already carries the
-   destination — and it is never the only way to reach the link. */
-.qr-cta { position: relative; display: inline-flex; }
-.qr-panel {
-  position: absolute;
-  bottom: calc(100% + 0.6rem);
-  left: 50%;
-  z-index: 6;
-  display: grid;
-  justify-items: center;
-  gap: 0.55rem;
-  padding: 0.9rem 0.9rem 0.75rem;
-  background: var(--paper);
-  border-radius: 0.9rem;
-  box-shadow: 0 18px 40px -18px rgba(27, 27, 27, 0.4),
-              0 0 0 1px var(--surface-line);
-  opacity: 0;
-  pointer-events: none;
-  transform: translate(-50%, 8px) scale(0.82);
-  transform-origin: 50% calc(100% + 1.4rem);
-  transition: opacity 0.16s ease, transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.qr-cta:hover .qr-panel,
-.qr-cta:focus-within .qr-panel {
-  opacity: 1;
-  transform: translate(-50%, 0) scale(1);
-}
-.qr { width: 8.5rem; height: 8.5rem; fill: var(--ink); }
-.qr-cap {
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--muted);
-  white-space: nowrap;
-}
-/* Coarse pointers can't hover and don't need a QR for their own screen. */
-@media (hover: none) {
-  .qr-panel { display: none; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .qr-panel { transition: opacity 0.12s linear; transform: translate(-50%, 0) scale(1); }
-}
 .btn[aria-disabled="true"],
 .btn-ghost[aria-disabled="true"] {
   opacity: 0.4;
@@ -871,6 +824,52 @@ a.screen {
 }
 a.screen:hover { transform: translateY(-2px); }
 .pd-media .screen { width: min(56rem, 88vw); }
+
+/* The closing action belongs to the live product, with the same quiet ink
+   and single accent already used by the editorial bands. */
+.pd-download { padding: clamp(3.5rem, 8vw, 6rem) 0; border-top: 1px solid var(--line); }
+.pd-download-panel {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem 3rem;
+  padding: clamp(2rem, 5vw, 4rem);
+  background: var(--ink);
+  color: var(--band-text);
+  border-radius: var(--r-panel);
+}
+.pd-download-copy { max-width: 39rem; }
+.pd-download .kicker { color: var(--band-muted); }
+.pd-download h2 { max-width: 15ch; margin: 0 0 1rem; font-size: clamp(2rem, 1.3rem + 3vw, 3.5rem); line-height: 1.13; }
+.pd-download-copy > p:last-child { max-width: 42ch; margin: 0; color: var(--band-muted); }
+.pd-download-action { display: grid; justify-items: start; gap: 0.8rem; flex: 0 0 auto; }
+.pd-download-link {
+  display: grid;
+  min-width: 13.5rem;
+  min-height: 4.5rem;
+  align-content: center;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.8rem;
+  background: var(--paper);
+  color: var(--ink);
+  text-decoration: none;
+  line-height: 1.2;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+.pd-download-link:hover { background: #fff; transform: translateY(-2px); }
+.pd-download-link-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.04em; }
+.pd-download-link strong { display: flex; justify-content: space-between; gap: 1.5rem; font-size: 1.25rem; }
+.pd-download-link strong span { color: var(--accent); }
+.pd-download-action > span { font-size: 0.75rem; color: var(--band-muted); }
+@media (max-width: 720px) {
+  .pd-download-panel { align-items: flex-start; flex-direction: column; }
+  .pd-download-action { width: 100%; }
+  .pd-download-link { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pd-download-link { transition: none; }
+  .pd-download-link:hover { transform: none; }
+}
 
 /* Device frame (shared with the homepage teaser) */
 .device {

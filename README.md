@@ -9,7 +9,7 @@ custom domain set via the `CNAME` file.
 
 ```text
 index.html        home: hero animation, PlayDraft, studio facts
-privacy.html      site privacy policy (app policy lands here before release)
+privacy.html      site privacy policy (app policy is at privacy-playdraft.html)
 support.html      PlayDraft support (App Store support URL)
 404.html          "You've overscrolled."
 assets/           css, js, fonts, brand svgs
