@@ -810,6 +810,10 @@ h2 { font-size: clamp(2.1rem, 1.5rem + 2.6vw, 3.4rem); }
   padding: 0.5rem;
   box-shadow: 0 30px 70px -35px rgba(27, 27, 27, 0.55);
 }
+.pd-visual .screen {
+  width: 100%;
+  overflow: hidden;
+}
 .screen video,
 .screen img {
   display: block;
