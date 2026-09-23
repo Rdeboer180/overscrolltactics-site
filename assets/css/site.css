@@ -660,6 +660,9 @@ h2 { font-size: clamp(2.1rem, 1.5rem + 2.6vw, 3.4rem); }
 
 .oops { text-align: center; place-content: center; display: grid; }
 .oops .m-arc-static { width: min(6rem, 24vw); margin: 0 auto 2rem; }
+.oops .playdraft-invite-mark { display: none; width: min(6rem, 24vw); height: auto; margin: 0 auto 2rem; }
+.oops.is-playdraft-invite .m-arc-static { display: none; }
+.oops.is-playdraft-invite .playdraft-invite-mark { display: block; }
 .oops p { color: var(--muted); margin: 0 0 2rem; }
 
 /* ---------- Responsive ---------- */

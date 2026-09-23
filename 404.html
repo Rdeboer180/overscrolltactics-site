@@ -20,6 +20,7 @@
 <main class="page oops">
   <div class="wrap">
     <img class="m-arc-static" src="/assets/img/wordmark.svg" alt="" width="90" height="121">
+    <img class="playdraft-invite-mark" src="/assets/img/playdraft-icon.png" alt="PlayDraft" width="96" height="96">
     <h1 id="oops-title">You've overscrolled.</h1>
     <p id="oops-body">There's nothing past this point — the page you're after doesn't exist.</p>
     <a class="btn" id="oops-cta" href="/">Back to the studio</a>
@@ -84,6 +85,7 @@
     var code;
     try { code = decodeURIComponent(m[1]); } catch (e) { code = m[1]; }
 
+    document.querySelector('.oops').classList.add('is-playdraft-invite');
     document.getElementById('oops-title').textContent = SHAPES[i].title;
     document.getElementById('oops-body').textContent = SHAPES[i].body(code);
     var cta = document.getElementById('oops-cta');
