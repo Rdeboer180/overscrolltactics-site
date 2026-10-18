@@ -1,1 +1,8 @@
 Asset title,Descriptor,Category
+Your first choice,"Required title: 2 to 80 characters, no repeats. Replace these example rows.",Category 1
+Your second choice,Optional descriptor: up to 160 characters. Shown under the title.,Category 2
+Your third choice,Optional category: up to 40 characters. Labels only; no draft rules.,Category 3
+Your fourth choice,Use at most 5 different categories on one board.,Category 4
+Your fifth choice,Reuse a label on as many rows as you like.,Category 5
+A choice with no extras,,
+"Commas, like this, are fine","Your spreadsheet adds the quotes when you export as CSV.",Category 1

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Make a Custom Draftboard CSV — PlayDraft</title>
-<meta name="description" content="Download the free PlayDraft CSV template, add your own draft choices, and import a custom draftboard on iPhone.">
+<meta name="description" content="Download the free PlayDraft CSV template, add up to 500 choices in up to 5 categories, and import your own pack on iPhone.">
 <link rel="canonical" href="https://overscrolltactics.com/playdraft-draftboard.html">
 <meta name="theme-color" content="#faf9f7">
 <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
@@ -33,19 +33,20 @@
   <section class="board-template-hero">
     <div class="wrap board-template-grid">
       <div>
-        <p class="kicker"><span class="tick" aria-hidden="true"></span>PlayDraft · Custom Draft</p>
+        <p class="kicker"><span class="tick" aria-hidden="true"></span>PlayDraft · Custom packs</p>
         <h1>Build the board.<br>Draft <em>anything.</em></h1>
-        <p class="lede">Your list, your argument. Use this free CSV template to set the choices your friends will draft from. Make it on a computer or iPhone, then import it when you create a Custom Draft.</p>
+        <p class="lede">Your list, your argument. Use this free CSV template to set the choices your friends will draft from. Fill it in on a computer or iPhone, then import it when you make a pack in PlayDraft.</p>
         <a class="btn" href="/assets/downloads/playdraft-draftboard-template.csv" download="playdraft-draftboard-template.csv">Download the CSV template <span aria-hidden="true">↓</span></a>
-        <p class="board-template-note">Free template · Three columns · Works with PlayDraft 2.1.6 or later</p>
+        <p class="board-template-note">Free template · Three columns · Up to 5 categories · Up to 500 choices</p>
       </div>
-      <div class="board-template-preview" aria-label="Example of a custom draftboard CSV">
-        <div class="board-template-preview-top"><img src="/assets/img/playdraft-icon.png" width="40" height="40" alt=""><span>YOUR DRAFTBOARD.CSV</span></div>
+      <div class="board-template-preview" aria-label="The first rows of the CSV template">
+        <div class="board-template-preview-top"><img src="/assets/img/playdraft-icon.png" width="40" height="40" alt=""><span>PLAYDRAFT-DRAFTBOARD-TEMPLATE.CSV</span></div>
         <div class="board-template-row board-template-row-head"><span>Asset title</span><span>Descriptor</span><span>Category</span></div>
-        <div class="board-template-row"><span>Window seat</span><span>First pick on any trip</span><span>Comfort</span></div>
-        <div class="board-template-row"><span>Roadside diner</span><span>Open after midnight</span><span>Stops</span></div>
-        <div class="board-template-row"><span>Perfect playlist</span><span>Everyone gets a song</span><span>Soundtrack</span></div>
-        <p>Example only. The download starts with headers so your board is entirely yours.</p>
+        <div class="board-template-row"><span>Your first choice</span><span>Required title: 2 to 80 characters, no repeats.</span><span>Category 1</span></div>
+        <div class="board-template-row"><span>Your second choice</span><span>Optional descriptor: up to 160 characters.</span><span>Category 2</span></div>
+        <div class="board-template-row"><span>Your fourth choice</span><span>Use at most 5 different categories on one board.</span><span>Category 4</span></div>
+        <div class="board-template-row"><span>A choice with no extras</span><span></span><span></span></div>
+        <p>The example rows explain the rules. Replace them with your own choices before you import.</p>
       </div>
     </div>
   </section>
@@ -53,12 +54,26 @@
     <div class="wrap">
       <div class="section-head"><h2 id="guide-title">From spreadsheet to draft room.</h2><p>Keep the header row exactly as it is. Add one draftable choice per row.</p></div>
       <ol class="board-template-steps">
-        <li><strong>Fill the sheet.</strong><span>Asset title is required. Descriptor and Category are optional. Each row can have one category label; use at most three different labels across the board.</span></li>
-        <li><strong>Export a CSV.</strong><span>Save or export as <abbr title="Comma-separated values">CSV</abbr> with the columns in this order: Asset title, Descriptor, Category. Keep the file in Files, iCloud Drive, or another location available to your iPhone.</span></li>
-        <li><strong>Import in PlayDraft.</strong><span>Open Packs → Custom Draft → Build a Draftboard → Import a CSV. Review the choices, fix any flagged rows, then tap Use this board before you create the room.</span></li>
+        <li><strong>Fill the sheet.</strong><span>Replace the example rows with your own choices. Asset title is required. Descriptor and Category are optional.</span></li>
+        <li><strong>Export a CSV.</strong><span>Save or export as <abbr title="Comma-separated values">CSV</abbr> with the columns in this order: Asset title, Descriptor, Category. Keep the file in Files, iCloud Drive, or anywhere else your iPhone can open it.</span></li>
+        <li><strong>Import in PlayDraft.</strong><span>Open Custom, tap Create pack, then Import CSV. Review the choices, fix or remove any flagged rows, then save the pack and host it.</span></li>
       </ol>
-      <div class="board-template-rule"><strong>How many choices?</strong><p>Add at least seats × picks per person. A room with 3 drafters and 5 picks each needs 15 choices. Boards support up to 500 choices. Category labels add color; they do not require anyone to draft from each category.</p></div>
-      <p class="board-template-help">No spreadsheet? You can type or paste choices directly in the app. Need a hand? <a href="/support.html">Visit PlayDraft support</a>.</p>
+      <h3 class="board-template-specs-title" id="rules-title">What the importer checks</h3>
+      <table class="board-template-specs" aria-labelledby="rules-title">
+        <thead><tr><th scope="col">Column or file</th><th scope="col">Rule</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Header row</th><td>Exactly <code>Asset title,Descriptor,Category</code>, in that order. Capital letters don’t matter.</td></tr>
+          <tr><th scope="row">Every row</th><td>Three columns, even when Descriptor or Category is blank. Empty rows are skipped.</td></tr>
+          <tr><th scope="row">Asset title</th><td>Required. 2–80 characters. Each title can appear only once, whatever its capitalization.</td></tr>
+          <tr><th scope="row">Descriptor</th><td>Optional. Up to 160 characters, shown under the title.</td></tr>
+          <tr><th scope="row">Category</th><td>Optional. Up to 40 characters, and up to 5 different labels across the board. “Snacks” and “snacks” count as one label. Labels add color only; nobody has to draft from each one.</td></tr>
+          <tr><th scope="row">Commas and quotes</th><td>A value with a comma goes inside double quotes, and a quote inside it is doubled (<code>""</code>). Spreadsheet apps do this for you when they export.</td></tr>
+          <tr><th scope="row">File</th><td>A <code>.csv</code> file under 1 MB, with up to 500 choices. Extra spaces are trimmed.</td></tr>
+          <tr><th scope="row">Content</th><td>Choices that break the <a href="/terms.html">content rules</a> are flagged so you can edit or remove them.</td></tr>
+        </tbody>
+      </table>
+      <div class="board-template-rule"><strong>How many choices?</strong><p>A room needs at least as many choices as players × picks per player. Rooms have 3–8 players and 3–7 picks each, so the smallest room needs 9 choices and the largest needs 56. You can save a pack with fewer and finish it later.</p></div>
+      <p class="board-template-help">No spreadsheet? You can type or paste choices directly in the app, one per line. Using PlayDraft 2.2.0 or earlier? Those versions allow 3 categories. Need a hand? <a href="/support.html">Visit PlayDraft support</a>.</p>
     </div>
   </section>
 </main>

@@ -3,16 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PlayDraft — Draft anything. Settle the debate.</title>
-<meta name="description" content="PlayDraft is a social drafting game for iPhone. Take snake-order picks from themed DraftPacks with 3–8 friends, build the best roster in the room, and let the Confidence Pool crown a champion.">
+<title>PlayDraft — Draft anything draftable.</title>
+<meta name="description" content="PlayDraft is a social drafting game for iPhone. Pick a pack or make your own, invite 2 to 7 friends to a private room, snake draft on a 2-minute or 8-hour clock, then compare lineups.">
 <link rel="canonical" href="https://overscrolltactics.com/playdraft.html">
 <meta name="theme-color" content="#faf9f7">
 <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
 <meta property="og:type" content="website">
-<meta property="og:title" content="PlayDraft — Draft anything. Settle the debate.">
-<meta property="og:description" content="A social drafting game for iPhone. Snake-order picks, themed DraftPacks, and an instant champion. From OTC Games.">
+<meta property="og:title" content="PlayDraft — Draft anything draftable.">
+<meta property="og:description" content="Pick a pack, invite your friends, snake draft, then compare lineups. Free on iPhone. From OTC Games.">
 <meta property="og:url" content="https://overscrolltactics.com/playdraft.html">
-<meta property="og:image" content="https://overscrolltactics.com/assets/video/playdraft-poster.jpg">
+<meta property="og:image" content="https://overscrolltactics.com/assets/video/playdraft-v2-poster.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preload" href="/assets/fonts/montserrat-var-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/css/site.css">
@@ -23,7 +23,7 @@
   "name": "PlayDraft",
   "applicationCategory": "GameApplication",
   "operatingSystem": "iOS",
-  "description": "A social drafting game for iPhone. Take snake-order picks from themed DraftPacks with 3–8 friends, build the best roster in the room, and let the Confidence Pool crown a champion.",
+  "description": "PlayDraft is a social drafting game for iPhone. Pick a pack or make your own, invite 2 to 7 friends to a private room, snake draft on a 2-minute or 8-hour clock, then compare lineups.",
   "author": { "@type": "Organization", "name": "OverscrollTactics LLC", "alternateName": "OTC Games" },
   "url": "https://overscrolltactics.com/playdraft.html",
   "installUrl": "https://apps.apple.com/us/app/playdraft/id6772778228"
@@ -51,38 +51,37 @@
   <div class="wrap pd-stage-grid">
     <div class="pd-copy">
       <p class="kicker"><span class="tick" aria-hidden="true"></span>Now on the App Store · iPhone</p>
-      <h1>Draft anything.<br>Settle the debate.</h1>
-      <p class="lede">Take the best mechanic in fantasy sports and point it at everything else. Snacks. Movies. Super powers. Whatever your group argues about.</p>
+      <h1>Draft anything<br>draftable.</h1>
+      <p class="lede">PlayDraft turns the argument you're already having into a snake draft. Pick a pack, invite your friends, take turns picking, then compare lineups and argue over who drafted it best.</p>
       <ul class="pd-meta">
         <li>iPhone</li>
         <li>3–8 players</li>
         <li>Free to play</li>
-        <li>One sitting</li>
+        <li>Private rooms</li>
       </ul>
       <div class="cta-row">
         <a class="btn" href="https://apps.apple.com/us/app/playdraft/id6772778228">Download on the App Store</a>
-        <p class="cta-note">Free to download on iPhone.</p>
+        <p class="cta-note">Free on iPhone. No subscriptions.</p>
       </div>
       <ul class="pd-quiet">
         <li><a href="#pitch">How it plays</a></li>
-        <li><a href="#packs">Twelve packs</a></li>
+        <li><a href="#packs">Fourteen packs</a></li>
+        <li><a href="#custom">Make your own</a></li>
         <li><a href="#download">Start drafting</a></li>
-        <li><a href="/playdraft-draftboard.html">Make a draftboard</a></li>
       </ul>
     </div>
     <div class="panel pd-media">
-      <!-- Wide "How to Play" reel (v12, 2026-08-18) — replaced the portrait
-           hand recording. The .screen frame is the wide sibling of .device. -->
+      <!-- v2 "How to Play" reel (tutorial v5, landscape case-study cut,
+           2026-10-13). The v13 reel files beside it are retired. -->
       <div class="screen">
-        <video poster="/assets/video/playdraft-poster.jpg"
+        <video poster="/assets/video/playdraft-v2-poster.jpg"
                width="1920" height="1080" controls loop muted playsinline preload="metadata"
-               aria-label="How to Play reel: pick a pack, make it yours, draft on the clock, play DraftLab daily, earn DraftCoins, watch the board decide, see how competitive changes everything, why sleepers pay, argue it, and take the debate public">
-          <source src="/assets/video/playdraft.webm" type="video/webm">
-          <source src="/assets/video/playdraft.mp4" type="video/mp4">
-          <!-- Subtitles are also burned into the picture, so the reel reads
-               with sound off and in players that ignore text tracks; this
-               track adds selectable/searchablecaptions where supported. -->
-          <track kind="captions" src="/assets/video/playdraft.vtt" srclang="en" label="English" default>
+               aria-label="How to Play reel: pick a pack or make it custom, set your rules and invite friends, find your pick and build your lineup on the clock, then share the recap as an image or text">
+          <source src="/assets/video/playdraft-v2.webm" type="video/webm">
+          <source src="/assets/video/playdraft-v2.mp4" type="video/mp4">
+          <!-- Chapter titles are in the picture; this track carries the
+               narration as selectable captions where supported. -->
+          <track kind="captions" src="/assets/video/playdraft-v2.vtt" srclang="en" label="English" default>
         </video>
       </div>
     </div>
@@ -92,9 +91,9 @@
 <section class="studio" id="pitch">
   <div class="wrap">
     <p class="kicker"><span class="tick" aria-hidden="true"></span>The idea</p>
-    <h2>One draft. One sitting.<br>One <span class="hl">champion</span>.</h2>
-    <p class="lede">Everybody has the argument. Best pizza topping. Greatest sitcom. Who'd actually win with invisibility. PlayDraft turns it into a real draft. <strong>On the clock, snake order, no take-backs.</strong> Then it hands down a verdict before anyone loses interest.</p>
-    <p class="lede">No season commitment. No fantasy-football spreadsheet. One draft, one sitting, one champion.</p>
+    <h2>Your argument.<br>Now it's a <span class="hl">draft</span>.</h2>
+    <p class="lede">Everybody has the argument. Best candy. Greatest sitcom. Who'd actually win with invisibility. PlayDraft turns it into a real draft. <strong>On the clock, snake order, no take-backs.</strong></p>
+    <p class="lede">No season to commit to and no spreadsheet. Draft in one sitting on a 2-minute clock, or let it run all week alongside your group chat.</p>
   </div>
 </section>
 
@@ -102,74 +101,42 @@
   <div class="wrap">
     <div class="section-head">
       <h2>How a draft plays</h2>
-      <p>Four steps from "I've got a take" to a share card in the group chat.</p>
+      <p>Four steps from "I've got a take" to a recap in the group chat.</p>
     </div>
     <ol class="loop">
       <li>
         <h3>Pick a pack</h3>
-        <p>Choose a DraftPack: Snacks, Movies, GOAT Athletes, Recess Games. Or write your own topic from scratch.</p>
+        <p>Choose from fourteen free packs, from Candy to GOAT Athletes, or make your own in Custom.</p>
       </li>
       <li>
-        <h3>Set the rules</h3>
-        <p>Field size, roster size, snake order, pick clock. Start now or schedule it for the weekend.</p>
+        <h3>Invite your friends</h3>
+        <p>Every draft is a private room for 3 to 8 players. Share the invite link or code, and the host can start once everyone's in.</p>
       </li>
       <li>
         <h3>Draft on the clock</h3>
-        <p>Snake-order picks off a live board. Search the pack, queue your targets, and steal before someone else does.</p>
+        <p>Snake-order picks off a live board. Search or filter the pack, queue your targets, and talk trash in the room chat.</p>
       </li>
       <li>
-        <h3>Crown a champion</h3>
-        <p>The board fills and the strongest roster is crowned instantly. Then you share it and the real argument starts.</p>
+        <h3>Compare lineups</h3>
+        <p>The recap shows every lineup and the full pick order. Share it as an image or as text, then draft again.</p>
       </li>
     </ol>
   </div>
 </section>
 
-<section class="band band-line">
+<section class="band band-line" aria-labelledby="screens-title">
   <div class="wrap">
     <div class="section-head">
-      <h2>Four ways to run it</h2>
-      <p>Same draft, different stakes. Whoever opens the room covers it, and everyone you invite drafts free.</p>
+      <h2 id="screens-title">See it on iPhone</h2>
+      <p>Real screens from PlayDraft 2.2.0.</p>
     </div>
-    <ul class="detail-rows">
-      <li>
-        <div>
-          <h3>Standard</h3>
-          <span class="tag">3–8 players · Default</span>
-        </div>
-        <div>
-          <p>The everyday draft. Build a roster, and the winning board is decided by the <strong>Confidence Pool</strong>: the live pick-rate data behind every item in the pack. The result lands the second the board fills.</p>
-          <p>Winning pays DraftCoins, and a win always covers your next ticket.</p>
-        </div>
-      </li>
-      <li>
-        <div>
-          <h3>Casual</h3>
-          <span class="tag">3–8 players · No winner</span>
-        </div>
-        <div>
-          <p>For when a scoreboard would ruin it. Nobody gets declared the winner. The boards go out to the group and a <strong>Settle It</strong> poll lets everyone weigh in on who drafted it best. Two, eight, or twenty-four hours on the clock.</p>
-        </div>
-      </li>
-      <li>
-        <div>
-          <h3>Competitive</h3>
-          <span class="tag">10 players · Ranked</span>
-        </div>
-        <div>
-          <p>A fixed ten-team field that auto-starts the moment the room fills. Six categories plus two flex picks, every time. Podium finishes score season points, and where you land across the season sets your rank.</p>
-          <p>Capped at twenty ranked drafts a season, so nobody grinds their way to the top.</p>
-        </div>
-      </li>
-      <li>
-        <div>
-          <h3>Custom Draft</h3>
-          <span class="tag">3–8 players · You author it</span>
-        </div>
-        <div>
-          <p>No pack, no list, no limits. Name the topic, and every single pick is a free-text write-in. Duplicates get blocked, so once someone takes it, it's gone. This is where the genuinely unhinged drafts happen.</p>
-        </div>
-      </li>
+    <ul class="pd-shots">
+      <li><img src="/assets/img/playdraft/02-packs.jpg" width="600" height="1304" loading="lazy" decoding="async" alt="The Packs tab: a search field, All packs, Recent and Favorites filters, and pack tiles for Candy, Fast Food, GOAT Athletes and Horror Movies."></li>
+      <li><img src="/assets/img/playdraft/03-pack-detail.jpg" width="600" height="1304" loading="lazy" decoding="async" alt="The Candy pack: 203 picks in 5 categories, with a search field, category filters and a Use this pack button."></li>
+      <li><img src="/assets/img/playdraft/05-review-draft.jpg" width="600" height="1304" loading="lazy" decoding="async" alt="Review draft: The Candy Showdown, 3 players, 3 picks each, 2 minutes per pick, open draft in snake order, using 1 Draft Ticket."></li>
+      <li><img src="/assets/img/playdraft/08-everyone-is-here.jpg" width="600" height="1304" loading="lazy" decoding="async" alt="The waiting room with all three players in, a countdown to the draft and a Start draft now button."></li>
+      <li><img src="/assets/img/playdraft/09-live-draft-board.jpg" width="600" height="1304" loading="lazy" decoding="async" alt="The live draft board: each player's picks in a grid, a pick clock on your turn, and Available, Queue, Roster and Chat tabs."></li>
+      <li><img src="/assets/img/playdraft/10-draft-recap.jpg" width="600" height="1304" loading="lazy" decoding="async" alt="The draft recap: Draft complete, with Lineups and Pick order views, a Share recap button and Draft again."></li>
     </ul>
   </div>
 </section>
@@ -178,32 +145,32 @@
   <div class="wrap">
     <div class="section-head">
       <h2>Set the <span class="hl">rules</span></h2>
-      <p>The host tunes the draft before anyone picks. Everything here is a real setting in the app.</p>
+      <p>The host sets up the room before anyone picks. Everything here is a real setting in the app.</p>
     </div>
     <dl class="options options-3">
       <div>
-        <dt>Draft type</dt>
-        <dd><span class="val">Category Draft</span> takes one pick from every category in the pack, plus up to two flex picks. <span class="val">Open Draft</span> lets you take anything from the pack, any round.</dd>
+        <dt>Players</dt>
+        <dd><span class="val">3 to 8 drafters</span> in a private room. Invite them with a link or a join code.</dd>
       </div>
       <div>
-        <dt>Field size</dt>
-        <dd><span class="val">3 to 8 drafters</span>, six by default. Ranked runs a fixed ten-team field.</dd>
-      </div>
-      <div>
-        <dt>Roster size</dt>
-        <dd><span class="val">3 to 8 picks</span> each. Category drafts size themselves from the pack, capped at eight rounds.</dd>
-      </div>
-      <div>
-        <dt>Pick order</dt>
-        <dd><span class="val">Snake by default.</span> Order reverses every round, so the last seat picks back-to-back. Turn it off for straight linear order.</dd>
+        <dt>Picks each</dt>
+        <dd><span class="val">3 to 8 picks</span> per player from a ready-made pack, or 3 to 7 from a pack you made.</dd>
       </div>
       <div>
         <dt>Pick clock</dt>
-        <dd>Fast drafts run <span class="val">2 or 5 minutes</span> a pick. Slow drafts run <span class="val">8 or 24 hours</span>, with an overnight pause so nobody loses a pick at 3am.</dd>
+        <dd><span class="val">2 minutes</span> to draft together, or <span class="val">8 hours</span> to pick when you can.</dd>
       </div>
       <div>
-        <dt>Timing</dt>
-        <dd>Start immediately or <span class="val">schedule up to a week out</span>. Miss your clock and the board auto-drafts for you, so one quiet phone can't stall the room.</dd>
+        <dt>Pick order</dt>
+        <dd><span class="val">Snake order.</span> The order reverses every round, so the last seat picks back-to-back. It's drawn when the draft starts.</dd>
+      </div>
+      <div>
+        <dt>Starting</dt>
+        <dd>The draft starts when the room fills and the countdown ends, or <span class="val">the host starts it right away</span>.</dd>
+      </div>
+      <div>
+        <dt>Missed picks</dt>
+        <dd>Miss your pick and <span class="val">the app picks for you</span>, so one slow friend never stalls the room.</dd>
       </div>
     </dl>
   </div>
@@ -212,49 +179,47 @@
 <section class="band band-line" id="packs">
   <div class="wrap">
     <div class="section-head">
-      <h2>Twelve packs at launch</h2>
-      <p>Every pack is free. There's nothing to unlock and nothing to buy. Each one is hand-sorted into categories so a Category Draft actually holds together.</p>
+      <h2>Fourteen packs, all free</h2>
+      <p>There's nothing to unlock and nothing to buy. Every pack is free to draft.</p>
     </div>
     <ul class="packs">
-      <li class="free">Movies <span>756</span></li>
-      <li class="free">Musical Artists <span>820</span></li>
-      <li class="free">GOAT Athletes <span>483</span></li>
-      <li class="free">Snacks <span>171</span></li>
-      <li class="free">Sitcoms <span>164</span></li>
-      <li class="free">Ice Cream <span>114</span></li>
-      <li class="free">Super Powers <span>106</span></li>
-      <li class="free">Pizza Toppings <span>100</span></li>
-      <li class="free">Recess Games <span>100</span></li>
-      <li class="free">Soda <span>96</span></li>
-      <li class="free">Fast Food <span>91</span></li>
-      <li class="free">Custom Draft <span>you author it</span></li>
+      <li class="free">Candy</li>
+      <li class="free">Fast Food</li>
+      <li class="free">Movies</li>
+      <li class="free">Horror Movies</li>
+      <li class="free">Sitcoms</li>
+      <li class="free">Snacks</li>
+      <li class="free">Soda</li>
+      <li class="free">Ice Cream</li>
+      <li class="free">Pizza Toppings</li>
+      <li class="free">Musical Artists</li>
+      <li class="free">GOAT Athletes</li>
+      <li class="free">Recess Games</li>
+      <li class="free">Super Powers</li>
+      <li class="free">Survivalist</li>
     </ul>
-    <p class="cta-note">Scary Movies wakes up every October. More packs land as the seasons roll. Packs built around real people are unofficial fan packs, free forever, and not affiliated with anyone in them.</p>
+    <p class="cta-note">Packs built around real people are unofficial fan packs and are not affiliated with anyone in them.</p>
   </div>
 </section>
 
-<section class="band band-line">
+<section class="band band-line" id="custom">
   <div class="wrap">
     <div class="section-head">
-      <h2>DraftLab, for the days nobody's around</h2>
-      <p>A solo arcade of drafting mini-games. It's the practice range, and every round you play sharpens the data that crowns real drafts.</p>
+      <h2>Make your own pack</h2>
+      <p>Name a topic, add the choices, and draft it with your group.</p>
     </div>
     <ul class="detail-rows">
       <li>
-        <div><h3>Daily Draft</h3><span class="tag">One board a day</span></div>
-        <div><p>Everyone in the world gets the identical board, and you get exactly one attempt. That's what makes the scores worth comparing. Ends in a crowd reveal showing how your picks stacked up against everybody else's.</p></div>
+        <div><h3>Add your choices</h3><span class="tag">Up to 500</span></div>
+        <div><p>Type them in, paste a list with one choice per line, or import a spreadsheet as a CSV. Add an optional descriptor and category label to any choice.</p></div>
       </li>
       <li>
-        <div><h3>QuickDraft</h3><span class="tag">10 seconds a pick</span></div>
-        <div><p>Draft a mini team: one from every category, plus a flex. Ten seconds on each pick and the board drafts for you when the clock hits zero.</p></div>
+        <div><h3>Save it in Custom</h3><span class="tag">Your library</span></div>
+        <div><p>Your packs live in the Custom tab. Save a list now and finish it later, then host a draft from it whenever your group is ready.</p></div>
       </li>
       <li>
-        <div><h3>LightningDraft</h3><span class="tag">60-second race</span></div>
-        <div><p>Best of four options, over and over, before the spark fades. As many rounds as you can clear in a minute.</p></div>
-      </li>
-      <li>
-        <div><h3>SearchDraft</h3><span class="tag">Typed recall</span></div>
-        <div><p>There's no list and no suggestions. You just name what comes to mind first, and every accepted answer buys you five more seconds.</p></div>
+        <div><h3>Start from the template</h3><span class="tag">Free CSV</span></div>
+        <div><p>The <a href="/playdraft-draftboard.html">PlayDraft CSV template</a> has the columns the importer expects, plus every rule it checks.</p></div>
       </li>
     </ul>
   </div>
@@ -265,72 +230,10 @@
     <path d="M62.1,159.36l-29.74-.3-.16-19.16-32.2-.48L.51,62.4C2.1,31.79,25.71,7.09,55.06,1.31c40.99-8.07,80.19,22.22,80.23,64.25l.12,116.53-72.99.04-.32-22.77ZM78.98,67.86l-.15-22.22c-.04-5.45-6.4-8.46-10.98-8.08-4.81.4-9.73,4.33-9.7,9.8l.13,21.05c.03,5.4,5.83,8.29,10.5,8.22s10.23-2.89,10.19-8.77Z"/>
   </svg>
   <div class="wrap">
-    <p class="kicker"><span class="tick" aria-hidden="true"></span>How the champion is crowned</p>
-    <h2>The board decides.<br>Not the loudest friend.</h2>
-    <p class="lede">Every finished draft gets an instant, explainable winner. Rosters are scored against the <strong>Confidence Pool</strong>: pick-rate data trained by everyone playing DraftLab. The verdict lands in seconds and you can see exactly why.</p>
-    <p class="lede">The reveal tells you which of your picks the crowd agreed with and which ones nobody else would have touched. Taking the obvious best thing is safe. Taking the thing only you believe in is how you actually win.</p>
-  </div>
-</section>
-
-<section class="band band-line">
-  <div class="wrap">
-    <div class="section-head">
-      <h2>A reason to come back</h2>
-      <p>Play, level, prestige. Ninety-day seasons with a real finish line.</p>
-    </div>
-    <ul class="detail-rows">
-      <li>
-        <div><h3>Levels &amp; tiers</h3><span class="tag">Rookie → Hall of Fame</span></div>
-        <div><p>Daily challenges pay XP, levels pay DraftCoins. Climb from <strong>Rookie</strong> through Bench, Starter, Captain and GM to <strong>Hall of Fame</strong>, each in three grades. Milestone levels hand out free tickets.</p></div>
-      </li>
-      <li>
-        <div><h3>Prestige</h3><span class="tag">Five ring finishes</span></div>
-        <div><p>Hit the season cap and prestige: your level resets, but your avatar ring upgrades through Common, Rare, Epic, Legendary, Mythic. It's the only thing in the app you can't buy.</p></div>
-      </li>
-      <li>
-        <div><h3>Season standings</h3><span class="tag">90 days</span></div>
-        <div><p>Competitive drafts score podium points across the season. Finish enough of them and you land Bronze, Silver or Gold. Then it wipes and everyone starts level.</p></div>
-      </li>
-      <li>
-        <div><h3>Achievements</h3><span class="tag">Badge case</span></div>
-        <div><p>First Win, Draft Champion, Vote Master, Crowd Favorite, Pack Legend. They reveal as you go and live on your profile where your friends can see them.</p></div>
-      </li>
-    </ul>
-  </div>
-</section>
-
-<section class="band band-line">
-  <div class="wrap">
-    <div class="section-head">
-      <h2>Play with your people</h2>
-      <p>PlayDraft is only fun with a group. Most of the app is built around getting one together.</p>
-    </div>
-    <dl class="options options-3">
-      <div>
-        <dt>Draft Leagues</dt>
-        <dd>Three to twenty members, a chat thread that never expires, and draft proposals that fire off a real draft once enough people opt in.</dd>
-      </div>
-      <div>
-        <dt>Room chat</dt>
-        <dd>A full chat tab inside the draft room, with everyone's picks landing inline as they happen. The trash talk is the point.</dd>
-      </div>
-      <div>
-        <dt>Friends &amp; DMs</dt>
-        <dd>Add friends, message them directly, and see who's drafting. Invite links and join codes drop people straight into a room.</dd>
-      </div>
-      <div>
-        <dt>Share cards</dt>
-        <dd>Every finished draft renders a share card, champion up top and every challenger's board underneath, sized for the group chat.</dd>
-      </div>
-      <div>
-        <dt>Notifications</dt>
-        <dd>On by default: you're on the clock, your draft is starting, a Settle It poll needs your vote. Everything else is opt-in.</dd>
-      </div>
-      <div>
-        <dt>Draft Companions</dt>
-        <dd>Pick a mascot as your avatar. DraftFox is the sly opener who always sniffs out the value pick. There are a dozen more.</dd>
-      </div>
-    </dl>
+    <p class="kicker"><span class="tick" aria-hidden="true"></span>Draft Tickets</p>
+    <h2>One ticket.<br>One draft.</h2>
+    <p class="lede">Each player uses one <strong>Draft Ticket</strong> per draft. It's held when you join and returned if you leave before the draft starts or the room doesn't fill within 7 days.</p>
+    <p class="lede">New players start with 6. Free to play, no subscriptions.</p>
   </div>
 </section>
 
@@ -343,27 +246,15 @@
     <dl class="options options-3">
       <div>
         <dt>Sign in</dt>
-        <dd>Sign in with Apple or email. Face ID locks the app if you want it locked.</dd>
+        <dd>Sign in with Apple or email. Face ID, Touch ID or your passcode can lock the app if you want it locked.</dd>
       </div>
       <div>
         <dt>Your data</dt>
         <dd>Delete your account from inside Settings, without emailing anyone or hunting for a support ticket.</dd>
       </div>
       <div>
-        <dt>Accessibility</dt>
-        <dd>Dark interface throughout, orientation lock, and spoken game announcements for DraftLab.</dd>
-      </div>
-      <div>
         <dt>Fair play</dt>
-        <dd>Report anything from anywhere, with a profanity filter and real moderators behind the queue.</dd>
-      </div>
-      <div>
-        <dt>DraftCoins</dt>
-        <dd>Earned by winning drafts and leveling up. They buy tickets, boosts and mascots, never anything that wins a draft for you.</dd>
-      </div>
-      <div>
-        <dt>Learning it</dt>
-        <dd>A chaptered Getting Started guide and a seven-part demo reel, so nobody's first draft is their worst one.</dd>
+        <dd>Report or block from the chat, with a profanity filter and a real person reviewing reports.</dd>
       </div>
     </dl>
   </div>
@@ -375,7 +266,7 @@
       <div class="pd-download-copy">
         <p class="kicker"><span class="tick" aria-hidden="true"></span>PlayDraft is live on iOS</p>
         <h2 id="download-title">Your next argument deserves a draft.</h2>
-        <p>Download PlayDraft, invite three to eight friends, and settle the debate together.</p>
+        <p>Download PlayDraft, invite 2 to 7 friends, and settle the debate together.</p>
       </div>
       <div class="pd-download-action">
         <a class="pd-download-link" href="https://apps.apple.com/us/app/playdraft/id6772778228" aria-label="Download PlayDraft on the App Store">

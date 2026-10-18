@@ -830,7 +830,9 @@ a.screen {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 a.screen:hover { transform: translateY(-2px); }
-.pd-media .screen { width: min(56rem, 88vw); }
+/* Sized to the panel, not the viewport: 88vw plus the panel's padding was
+   wider than a phone and pushed the whole page sideways. */
+.pd-media .screen { width: min(56rem, 100%); }
 
 /* The closing action belongs to the live product, with the same quiet ink
    and single accent already used by the editorial bands. */
@@ -1024,6 +1026,30 @@ a.device:hover {
   font-variant-numeric: tabular-nums;
 }
 
+/* v2 screenshot strip: real 1206×2622 App Store captures, scaled. Scrolls
+   sideways on narrow screens instead of shrinking the phones unreadably. */
+.pd-shots {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(11rem, 1fr);
+  gap: 1rem;
+  margin: 0;
+  padding: 0 0 0.5rem;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+}
+.pd-shots li { scroll-snap-align: start; }
+.pd-shots img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--r-card);
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
 /* The stage owns exactly one viewport, so nothing peeks below the fold. On a
    short window the copy column is what blows the budget, not the panel —
    tighten the type and the vertical rhythm rather than shrinking the device. */
@@ -1043,7 +1069,7 @@ a.device:hover {
 
 @media (max-width: 900px) {
   .pd-stage { min-height: 0; padding-top: clamp(6rem, 16vw, 8rem); }
-  .pd-stage-grid { grid-template-columns: 1fr; }
+  .pd-stage-grid { grid-template-columns: minmax(0, 1fr); }
   .pd-media { min-height: 0; order: 2; }
   .pd-media .device { width: min(15rem, 62vw); }
   .loop { grid-template-columns: repeat(2, 1fr); }
@@ -1078,5 +1104,13 @@ a.device:hover {
 .board-template-rule p { margin: .4rem 0 0; }
 .board-template-help { margin: 2rem 0 0; }
 .board-template-help a { text-decoration-thickness: 1px; text-underline-offset: .2em; }
+.board-template-specs-title { font-size: 1.04rem; margin: 2.5rem 0 1rem; }
+.board-template-specs { width: 100%; max-width: 56rem; border-collapse: collapse; margin: 0 0 2.5rem; font-size: .9rem; line-height: 1.45; }
+.board-template-specs th, .board-template-specs td { text-align: left; vertical-align: top; padding: .85rem 1rem .85rem 0; border-bottom: 1px solid var(--line); }
+.board-template-specs thead th { font-size: .65rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.board-template-specs tbody th { width: 11rem; font-weight: 700; }
+.board-template-specs td { color: var(--muted); }
+.board-template-specs code { font-size: .85em; overflow-wrap: anywhere; }
+@media (max-width: 560px) { .board-template-specs thead { display: none; } .board-template-specs tr { display: block; padding: .85rem 0; border-bottom: 1px solid var(--line); } .board-template-specs th, .board-template-specs td { display: block; padding: 0; border: 0; width: auto; } .board-template-specs tbody th { margin-bottom: .3rem; } }
 @media (max-width: 760px) { .board-template-grid { grid-template-columns: 1fr; } .board-template-hero { padding-top: 8rem; } .board-template-steps { grid-template-columns: 1fr; } }
 @media (max-width: 430px) { .board-template-preview { padding: 1rem; } .board-template-row { font-size: .7rem; gap: .4rem; } }
