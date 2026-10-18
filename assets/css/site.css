@@ -700,6 +700,8 @@ h2 { font-size: clamp(2.1rem, 1.5rem + 2.6vw, 3.4rem); }
   display: grid;
   align-content: center;
   padding: clamp(6rem, 12vw, 8rem) 0 clamp(2.5rem, 6vw, 4rem);
+  /* Keep the full-bleed reel at its scale; crop at the viewport. */
+  overflow-x: clip;
 }
 .pd-stage-grid {
   display: grid;
@@ -830,9 +832,9 @@ a.screen {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 a.screen:hover { transform: translateY(-2px); }
-/* Sized to the panel, not the viewport: 88vw plus the panel's padding was
-   wider than a phone and pushed the whole page sideways. */
-.pd-media .screen { width: min(56rem, 100%); }
+/* The reel is the star: sized to the viewport, not the panel, so it runs past
+   the panel and off the right edge. .pd-stage clips it there. */
+.pd-media .screen { width: min(56rem, 88vw); }
 
 /* The closing action belongs to the live product, with the same quiet ink
    and single accent already used by the editorial bands. */
